@@ -1,0 +1,38 @@
+{
+    "niv": {
+        "branch": "master",
+        "description": "Easy dependency management for Nix projects",
+        "homepage": "https://github.com/nmattia/niv",
+        "owner": "nmattia",
+        "repo": "niv",
+        "rev": "9d35b9e4837ab88517210b1701127612c260eccf",
+        "sha256": "0q50xhnm8g2yfyakrh0nly4swyygxpi0a8cb9gp65wcakcgvzvdh",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/niv/archive/9d35b9e4837ab88517210b1701127612c260eccf.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "release-20.03",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "067d8e6c9f4ad3df62d4c9359865747aedea8853",
+        "sha256": "16lgiy1zn3nms17xhgp28a8vpfjpw9kcpi95hfdax1zj94fkcvaa",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/067d8e6c9f4ad3df62d4c9359865747aedea8853.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "unison": {
+        "branch": "trunk",
+        "description": "A friendly programming language from the future",
+        "homepage": "https://unisonweb.org",
+        "owner": "unisonweb",
+        "repo": "unison",
+        "rev": "1c880c064a5435077638eed5962b422eb6a358a1",
+        "sha256": "1ywqi4m4k440gnqh1irkrkiw9pnzrwl0xzjan00zpsnq6cg9xyw1",
+        "type": "tarball",
+        "url": "https://github.com/unisonweb/unison/archive/1c880c064a5435077638eed5962b422eb6a358a1.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
