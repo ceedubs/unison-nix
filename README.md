@@ -51,7 +51,7 @@ nix-shell -p unison-ucm --command ucm
 ## available packages
 
 * `unison-ucm`: the Unison code manager
-* `vim-unison`: a vim plugin providing syntax highlighting for Unison files
+* `vim-unison` (`vimPlugins.vim-unison` in the overlay): a vim plugin providing syntax highlighting for Unison files
 * `unison-stack`: includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler)
 
 In the future this repository would be a natural home for derivations for other Unison tools such as a language server.
