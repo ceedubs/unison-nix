@@ -1,6 +1,5 @@
 let
   unisonPkgs = import nix/default.nix {};
+  overlays = import ./nix/overlays.nix;
 in
-unisonPkgs // {
-  overlay = import ./nix/overlay.nix;
-}
+unisonPkgs // overlays

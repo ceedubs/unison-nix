@@ -42,6 +42,8 @@ echo '(import <unison>).overlay' > ~/.config/nixpkgs/overlays/unison.nix
 
 Adding this overlay isn't strictly necessary, but it makes it easier to drop into a `ucm` shell.
 
+If you run into issues using Unison packages from this channel, you may want to try using `pinnedOverlay` instead of `overlay`. The `pinnedOverlay` uses a fixed version of nixpkgs instead of your system nixpkgs when building Unison derivations. This can help prevent version mismatches but might result in additional downloads.
+
 ### 2. run the Unison code manager
 
 ```sh
