@@ -1,0 +1,15 @@
+on:
+  pull_request:
+  push:
+jobs:
+  test_ucm:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v11
+    - run: |
+        nix-env -f default.nix -i -A unison-ucm
+        ucm --version
