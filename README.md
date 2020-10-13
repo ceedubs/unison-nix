@@ -37,7 +37,8 @@ It's possible to run the Unison code manager in a "virtual environment" that won
 ⚠️  The step below requires that you [add the Unison Nix channel](#2.-add-the-unison-nix-channel) first. ⚠️
 
 ```
-mkdir -p ~/.config/nixpkgs/overlays && echo '(import <unison>).overlay' > ~/.config/nixpkgs/overlays/unison.nix
+mkdir -p ~/.config/nixpkgs/overlays
+echo '(import <unison>).overlay' > ~/.config/nixpkgs/overlays/unison.nix
 ```
 
 Adding this overlay isn't strictly necessary, but it makes it easier to drop into a `ucm` shell.
