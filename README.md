@@ -25,7 +25,7 @@ nix-env -f '<unison>' -i -A unison-ucm
 
 You can verify that installation was successful by running `ucm --version`.
 
-If you have [added the Unison nixpkgs overlay](#1.-add-the-unison-nixpkgs-overlay), then you could instead run `nix-env -i -A nixpkgs.unison-ucm`.
+If you have [added the Unison nixpkgs overlay](#1-add-the-unison-nixpkgs-overlay), then you could instead run `nix-env -i -A nixpkgs.unison-ucm`.
 
 ## try Unison out in a virtual environment
 
@@ -34,7 +34,7 @@ It's possible to run the Unison code manager in a "virtual environment" that won
 ### 1. add the Unison nixpkgs overlay
 
 
-⚠️  The step below requires that you [add the Unison Nix channel](#2.-add-the-unison-nix-channel) first. ⚠️
+⚠️  The step below requires that you [add the Unison Nix channel](#2-add-the-unison-nix-channel) first. ⚠️
 
 ```
 mkdir -p ~/.config/nixpkgs/overlays
@@ -56,7 +56,7 @@ nix-shell -p unison-ucm --command ucm
 * `unison-ucm`: the Unison code manager
 * `vim-unison` (`vimPlugins.vim-unison` in the overlay): a vim plugin providing syntax highlighting for Unison files
 * `unison-stack` (experimental): includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler). To use:
-  * [add the Unison Nix channel](#2.-add-the-unison-nix-channel)
+  * [add the Unison Nix channel](#2-add-the-unison-nix-channel)
   * `echo '(import <unison>).unison-stack' > shell.nix` within the Unison repository
   * `nix-shell shell.nix`
   * `stack build`, `stack exec tests`, etc.
