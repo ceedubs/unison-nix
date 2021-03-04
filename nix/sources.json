@@ -1,4 +1,28 @@
 {
+    "haskeline": {
+        "branch": "unison",
+        "description": "A Haskell library for line input in command-line programs.",
+        "homepage": "  https://hackage.haskell.org/package/haskeline",
+        "owner": "unisonweb",
+        "repo": "haskeline",
+        "rev": "2944b11d19ee034c48276edc991736105c9d6143",
+        "sha256": "02ia83gjq3kssj4kx8a6673q62m65zd6hipazmfvhzps3yvfyvx7",
+        "type": "tarball",
+        "url": "https://github.com/unisonweb/haskeline/archive/2944b11d19ee034c48276edc991736105c9d6143.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "megaparsec": {
+        "branch": "unison",
+        "description": "Industrial-strength monadic parser combinator library",
+        "homepage": "",
+        "owner": "unisonweb",
+        "repo": "megaparsec",
+        "rev": "c4463124c578e8d1074c04518779b5ce5957af6b",
+        "sha256": "1a7b9s4j76c8k8gz6r2jidkb8yqpj0rgn9qdkj14jymjcpa3gmgd",
+        "type": "tarball",
+        "url": "https://github.com/unisonweb/megaparsec/archive/c4463124c578e8d1074c04518779b5ce5957af6b.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
