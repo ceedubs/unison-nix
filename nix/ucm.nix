@@ -28,6 +28,7 @@
 , fetchurl
 , gmp
 , less
+, lib
 , ncurses5
 , stdenv
 , zlib
@@ -59,8 +60,8 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   dontConfigure = true;
 
-  nativeBuildInputs = stdenv.lib.optional (!stdenv.isDarwin) autoPatchelfHook;
-  buildInputs = stdenv.lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
+  nativeBuildInputs = lib.optional (!stdenv.isDarwin) autoPatchelfHook;
+  buildInputs = lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
   propagatedBuildInputs = [ less ];
 
   installPhase = ''
@@ -68,7 +69,7 @@ stdenv.mkDerivation rec {
     mv ucm $out/bin
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Modern, statically-typed purely functional language";
     homepage = "https://unisonweb.org/";
     license = with licenses; [ mit bsd3 ];
