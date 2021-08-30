@@ -23,7 +23,7 @@ nix-channel --update unison
 nix-env -f '<unison>' -i -A unison-ucm
 ```
 
-You can verify that installation was successful by running `ucm --version`.
+You can verify that installation was successful by running `ucm version`.
 
 If you have [added the Unison nixpkgs overlay](#1-add-the-unison-nixpkgs-overlay), then you could instead run `nix-env -i -A nixpkgs.unison-ucm`.
 
