@@ -27,6 +27,7 @@
 { autoPatchelfHook
 , fetchurl
 , gmp
+, installShellFiles
 , less
 , lib
 , ncurses5
@@ -65,9 +66,23 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ less ];
 
   installPhase = ''
-    mkdir -p $out/bin
-    mv ucm $out/bin
+    UCM="$out/bin/ucm"
+
+    install -D -m555 -T ucm $UCM
+
+    mkdir -p $out/share/bash-completion/completions
+    $UCM --bash-completion-script $UCM > $out/share/bash-completion/completions/ucm.bash
+    mkdir -p $out/share/fish/vendor_completions.d/
+    $UCM --fish-completion-script $UCM > $out/share/fish/vendor_completions.d/ucm.fish
+    mkdir -p $out/share/zsh/site-functions/
+    $UCM --zsh-completion-script $UCM > $out/share/zsh/site-functions/_ucm
   '';
+
+  #postInstall = ''
+  #  installShellCompletion --bash $out/share/bash-completion/completions/ucm.bash
+  #  installShellCompletion --fish $out/share/fish/vendor_completions.d/ucm.fish
+  #  installShellCompletion --zsh $out/share/zsh/site-functions/_ucm
+  #'';
 
   meta = with lib; {
     description = "Modern, statically-typed purely functional language";
@@ -75,5 +90,6 @@ stdenv.mkDerivation rec {
     license = with licenses; [ mit bsd3 ];
     maintainers = [ maintainers.ceedubs ];
     platforms = [ "x86_64-darwin" "x86_64-linux" ];
+    mainProgram = "ucm";
   };
 }
