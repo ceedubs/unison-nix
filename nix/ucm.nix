@@ -94,11 +94,11 @@ stdenv.mkDerivation rec {
     $UCM --zsh-completion-script $UCM > $out/share/zsh/site-functions/_ucm
   '';
 
-  #postInstall = ''
-  #  installShellCompletion --bash $out/share/bash-completion/completions/ucm.bash
-  #  installShellCompletion --fish $out/share/fish/vendor_completions.d/ucm.fish
-  #  installShellCompletion --zsh $out/share/zsh/site-functions/_ucm
-  #'';
+  postInstall = ''
+    installShellCompletion --bash $out/share/bash-completion/completions/ucm.bash
+    installShellCompletion --fish $out/share/fish/vendor_completions.d/ucm.fish
+    installShellCompletion --zsh $out/share/zsh/site-functions/_ucm
+  '';
 
   meta = with lib; {
     description = "Modern, statically-typed purely functional language";
