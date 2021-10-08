@@ -29,6 +29,7 @@
 , installShellFiles
 , less
 , lib
+, makeWrapper
 , ncurses5
 , stdenv
 , zlib
@@ -75,6 +76,7 @@ stdenv.mkDerivation rec {
   # Without this the dynamic linker complains "ucm: ucm: no version information available (required by ucm)"
   dontStrip = true;
 
+  nativeBuildInputs = [ makeWrapper ];
   buildInputs = lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
   propagatedBuildInputs = [ less ];
 
@@ -82,6 +84,7 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     UCM="$out/bin/ucm"
+    UI="$out/share/ui"
 
     install -D -m555 -T ucm $UCM
     ${patchelf libPath}
@@ -92,6 +95,11 @@ stdenv.mkDerivation rec {
     $UCM --fish-completion-script $UCM > $out/share/fish/vendor_completions.d/ucm.fish
     mkdir -p $out/share/zsh/site-functions/
     $UCM --zsh-completion-script $UCM > $out/share/zsh/site-functions/_ucm
+
+    mv ui $UI
+
+    wrapProgram $UCM \
+      --prefix UCM_WEB_UI : $UI
   '';
 
   postInstall = ''
