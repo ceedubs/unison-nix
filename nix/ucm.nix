@@ -24,8 +24,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-{ autoPatchelfHook
-, fetchurl
+{ fetchurl
 , gmp
 , installShellFiles
 , less
@@ -35,6 +34,19 @@
 , zlib
 }:
 
+let
+  dynamic-linker = stdenv.cc.bintools.dynamicLinker;
+
+  patchelf = libPath :
+    if stdenv.isDarwin
+      then ""
+      else
+        ''
+          chmod u+w $UCM
+          patchelf --interpreter ${dynamic-linker} --set-rpath ${libPath} $UCM
+          chmod u-w $UCM
+        '';
+in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
   milestone_id = "M2h";
@@ -49,7 +61,6 @@ stdenv.mkDerivation rec {
       srcArgs = if (stdenv.isDarwin) then
         { os = "macos"; sha256 = "1s07ilw7lifhd1kv1jhpcyiw10m62bdipl7szz3lhrkqc8157q0j"; }
       else { os = "linux"; sha256 = "0qr35rgkrqh9fbfghmvflrshjagq1fcqyykz04ch5dzn0sz00gxh"; };
-
     in
       fetchurl {
         url = srcUrl srcArgs.os;
@@ -61,14 +72,19 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   dontConfigure = true;
 
-  nativeBuildInputs = lib.optional (!stdenv.isDarwin) autoPatchelfHook;
+  # Without this the dynamic linker complains "ucm: ucm: no version information available (required by ucm)"
+  dontStrip = true;
+
   buildInputs = lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
   propagatedBuildInputs = [ less ];
+
+  libPath = lib.makeLibraryPath (buildInputs ++ propagatedBuildInputs);
 
   installPhase = ''
     UCM="$out/bin/ucm"
 
     install -D -m555 -T ucm $UCM
+    ${patchelf libPath}
 
     mkdir -p $out/share/bash-completion/completions
     $UCM --bash-completion-script $UCM > $out/share/bash-completion/completions/ucm.bash
