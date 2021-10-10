@@ -72,6 +72,7 @@ stdenv.mkDerivation rec {
   sourceRoot = ".";
   dontBuild = true;
   dontConfigure = true;
+  doInstallCheck = true;
 
   # Without this the dynamic linker complains "ucm: ucm: no version information available (required by ucm)"
   dontStrip = true;
@@ -106,6 +107,11 @@ stdenv.mkDerivation rec {
     installShellCompletion --bash $out/share/bash-completion/completions/ucm.bash
     installShellCompletion --fish $out/share/fish/vendor_completions.d/ucm.fish
     installShellCompletion --zsh $out/share/zsh/site-functions/_ucm
+  '';
+
+  installCheckPhase = ''
+    $out/bin/ucm version | grep -q 'ucm version:' || \
+      { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
   '';
 
   meta = with lib; {
