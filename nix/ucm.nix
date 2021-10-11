@@ -102,7 +102,7 @@ stdenv.mkDerivation rec {
     mv ui $UI
 
     wrapProgram $UCM \
-      --prefix UCM_WEB_UI : $UI \
+      --set-default UCM_WEB_UI "$UI" \
       --prefix PATH : ${binPath}
   '';
 
