@@ -78,11 +78,12 @@ stdenv.mkDerivation rec {
   dontStrip = true;
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
-  propagatedBuildInputs = [ less ];
+  buildInputs = [less] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
+  propagatedBuildInputs = [ ];
 
   libPath = lib.makeLibraryPath (buildInputs ++ propagatedBuildInputs);
 
+  # Note: 'less' is called from a subprocess, so we need to ensure that it's on the PATH
   installPhase = ''
     UCM="$out/bin/ucm"
     UI="$out/share/ui"
@@ -100,7 +101,8 @@ stdenv.mkDerivation rec {
     mv ui $UI
 
     wrapProgram $UCM \
-      --prefix UCM_WEB_UI : $UI
+      --prefix UCM_WEB_UI : $UI \
+      --prefix PATH : ${less}/bin
   '';
 
   postInstall = ''
@@ -112,6 +114,8 @@ stdenv.mkDerivation rec {
   installCheckPhase = ''
     $out/bin/ucm version | grep -q 'ucm version:' || \
       { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
+    echo 'ls' | PATH="" $out/bin/ucm --no-base --codebase-create $TMP || \
+      { echo 1>&2 'ERROR: could not run ls on a fresh ucm codebase'; exit 1; }
   '';
 
   meta = with lib; {
