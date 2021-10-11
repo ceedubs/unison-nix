@@ -25,6 +25,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 { fetchurl
+, git
 , gmp
 , installShellFiles
 , less
@@ -78,12 +79,12 @@ stdenv.mkDerivation rec {
   dontStrip = true;
 
   nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [less] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
+  buildInputs = [git less] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
   propagatedBuildInputs = [ ];
 
   libPath = lib.makeLibraryPath (buildInputs ++ propagatedBuildInputs);
+  binPath = lib.makeBinPath(buildInputs ++ propagatedBuildInputs);
 
-  # Note: 'less' is called from a subprocess, so we need to ensure that it's on the PATH
   installPhase = ''
     UCM="$out/bin/ucm"
     UI="$out/share/ui"
@@ -102,7 +103,7 @@ stdenv.mkDerivation rec {
 
     wrapProgram $UCM \
       --prefix UCM_WEB_UI : $UI \
-      --prefix PATH : ${less}/bin
+      --prefix PATH : ${binPath}
   '';
 
   postInstall = ''
