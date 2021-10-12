@@ -24,7 +24,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-{ fetchurl
+{ autoPatchelfHook
+, fetchurl
 , git
 , gmp
 , installShellFiles
@@ -37,17 +38,8 @@
 }:
 
 let
-  dynamic-linker = stdenv.cc.bintools.dynamicLinker;
-
-  patchelf = libPath :
-    if stdenv.isDarwin
-      then ""
-      else
-        ''
-          chmod u+w $UCM
-          patchelf --interpreter ${dynamic-linker} --set-rpath ${libPath} $UCM
-          chmod u-w $UCM
-        '';
+  ucm = "$out/bin/ucm";
+  ui = "$out/bin/ui";
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
@@ -75,41 +67,27 @@ stdenv.mkDerivation rec {
   dontConfigure = true;
   doInstallCheck = true;
 
-  # Without this the dynamic linker complains "ucm: ucm: no version information available (required by ucm)"
-  dontStrip = true;
+  nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
+  buildInputs = [ git less ] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
 
-  nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [git less] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
-  propagatedBuildInputs = [ ];
-
-  libPath = lib.makeLibraryPath (buildInputs ++ propagatedBuildInputs);
-  binPath = lib.makeBinPath(buildInputs ++ propagatedBuildInputs);
+  binPath = lib.makeBinPath buildInputs;
 
   installPhase = ''
-    UCM="$out/bin/ucm"
-    UI="$out/share/ui"
+    install -D -m555 -T ucm ${ucm}
 
-    install -D -m555 -T ucm $UCM
-    ${patchelf libPath}
+    mv ui ${ui}
 
-    mkdir -p $out/share/bash-completion/completions
-    $UCM --bash-completion-script $UCM > $out/share/bash-completion/completions/ucm.bash
-    mkdir -p $out/share/fish/vendor_completions.d/
-    $UCM --fish-completion-script $UCM > $out/share/fish/vendor_completions.d/ucm.fish
-    mkdir -p $out/share/zsh/site-functions/
-    $UCM --zsh-completion-script $UCM > $out/share/zsh/site-functions/_ucm
-
-    mv ui $UI
-
-    wrapProgram $UCM \
-      --set-default UCM_WEB_UI "$UI" \
+    wrapProgram ${ucm} \
+      --set-default UCM_WEB_UI ${ui} \
       --prefix PATH : ${binPath}
   '';
 
-  postInstall = ''
-    installShellCompletion --bash $out/share/bash-completion/completions/ucm.bash
-    installShellCompletion --fish $out/share/fish/vendor_completions.d/ucm.fish
-    installShellCompletion --zsh $out/share/zsh/site-functions/_ucm
+
+  postFixup = ''
+    installShellCompletion --cmd ucm \
+      --bash <(${ucm} --bash-completion-script ${ucm}) \
+      --fish <(${ucm} --fish-completion-script ${ucm}) \
+      --zsh <(${ucm} --zsh-completion-script ${ucm})
   '';
 
   installCheckPhase = ''
