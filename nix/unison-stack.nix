@@ -12,5 +12,5 @@ in haskell.lib.buildStackProject {
   nativeBuildInputs = native_libs;
   buildInputs = libs;
   name = "unison-stack";
-  src = if lib.inNixShell then null else unisonSrc;
+  src = unisonSrc;
 }
