@@ -1,4 +1,4 @@
-{ system ? builtins.currentSystem }:
+{ system ? builtins.currentSystem, ... }:
 let
   flakeOutput = (
     import (

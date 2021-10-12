@@ -1,1 +1,2 @@
-import ./nix/default.nix {}
+{ ... } @ args:
+import ./nix/default.nix args
