@@ -2,62 +2,56 @@
 
 [Nix] support for the [Unison] programming language
 
-## installation
+## usage
 
-### 1. install Nix
+**NOTE:** If you don't already have Nix installed, follow [the instructions on the Nix site](https://nixos.org/download.html).
 
-If you don't already have Nix installed, follow [the instructions on the Nix site](https://nixos.org/download.html).
+### install Unison code manager
 
-### 2. add the Unison Nix channel
+**If your version of Nix supports [Nix flakes]**:
 
-This is the easiest way to fetch the latest Nix support for Unison.
+```
+nix profile install github:ceedubs/unison-nix#ucm
+```
+
+**Older versions of Nix:**
+
+```
+nix-env -iA unison-ucm -f https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz
+```
+
+### try out Unison without installing it to your PATH/Nix profile
+
+**If your version of Nix supports [Nix flakes]:**
+
+```
+nix run github:ceedubs/unison-nix#ucm
+```
+
+**Older versions of Nix:**
+
+```
+nix-build https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz -A unison-ucm
+```
+
+This will create a symlink named `result` in your current directory. Now run:
 
 ```sh
-nix-channel --add https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz unison
-nix-channel --update unison
+./result/bin/ucm
 ```
 
-### 3. install Unison code manager
+Once you are done trying out Unison you can `rm ./result`.
 
-```sh
-nix-env -f '<unison>' -i -A unison-ucm
-```
+## available packages/tools
 
-You can verify that installation was successful by running `ucm version`.
-
-If you have [added the Unison nixpkgs overlay](#1-add-the-unison-nixpkgs-overlay), then you could instead run `nix-env -i -A nixpkgs.unison-ucm`.
-
-## try Unison out in a virtual environment
-
-It's possible to run the Unison code manager in a "virtual environment" that won't add `ucm` to your user `$PATH`. This can also be used to try out a newer version of `ucm` without clobbering an existing older version of `ucm` that you might have installed.
-
-### 1. add the Unison nixpkgs overlay
-
-
-⚠️  The step below requires that you [add the Unison Nix channel](#2-add-the-unison-nix-channel) first. ⚠️
-
-```
-mkdir -p ~/.config/nixpkgs/overlays
-echo '(import <unison>).overlay' > ~/.config/nixpkgs/overlays/unison.nix
-```
-
-Adding this overlay isn't strictly necessary, but it makes it easier to drop into a `ucm` shell.
-
-### 2. run the Unison code manager
-
-```sh
-nix-shell -p unison-ucm --command ucm
-```
-
-## available packages
-
-* `unison-ucm`: the Unison code manager
-* `vim-unison` (`vimPlugins.vim-unison` in the overlay): a vim plugin providing syntax highlighting for Unison files
+* `ucm`: the Unison code manager
+  * This is named `unison-ucm` in the overlay and for older versions of Nix (pre-flakes)
+* `vim-unison`: a vim plugin providing syntax highlighting for Unison files
+  * This is provided as `vimPlugins.vim-unison` in the overlay
 * `unison-stack` (experimental): includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler). To use:
-  * [add the Unison Nix channel](#2-add-the-unison-nix-channel)
-  * `echo '(import <unison>).unison-stack' > shell.nix` within the Unison repository
-  * `nix-shell shell.nix`
+  * `nix develop github:ceedubs/unison-nix`
   * `stack build`, `stack exec tests`, etc.
+* `overlay`: A nixpkgs overlay that adds the Unison packages is the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
 
 In the future this repository would be a natural home for derivations for other Unison tools such as a language server.
 
@@ -70,6 +64,7 @@ In the future this repository would be a natural home for derivations for other 
 The [nixpkgs repository][nixpkgs] was the original home of Unison Nix dervations, but Unison is evolving quickly and getting Unison updates merged into nixpkgs turned out to be a bottleneck in getting these new features and bug fixes out to Unison users.
 
 [Nix]: https://nixos.org/
+[Nix Flakes]: https://nixos.wiki/wiki/Flakes
 [nixpkgs]: https://github.com/nixos/nixpkgs
 [Stack]: https://docs.haskellstack.org/en/stable/README/
 [Unison]: https://www.unisonweb.org/
