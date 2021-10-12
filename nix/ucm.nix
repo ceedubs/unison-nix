@@ -69,9 +69,8 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
   buildInputs = [ git less ] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
-  propagatedBuildInputs = [];
 
-  binPath = lib.makeBinPath (buildInputs ++ propagatedBuildInputs);
+  binPath = lib.makeBinPath buildInputs;
 
   installPhase = ''
     install -D -m555 -T ucm ${ucm}
