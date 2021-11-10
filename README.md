@@ -51,7 +51,7 @@ Once you are done trying out Unison you can `rm ./result`.
 * `unison-stack` (experimental): includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler). To use:
   * `nix develop github:ceedubs/unison-nix`
   * `stack build`, `stack exec tests`, etc.
-* `overlay`: A nixpkgs overlay that adds the Unison packages is the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
+* `overlay`: A nixpkgs overlay that adds the Unison packages in the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
 
 In the future this repository would be a natural home for derivations for other Unison tools such as a language server.
 
