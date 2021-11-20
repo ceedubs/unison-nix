@@ -26,6 +26,7 @@
 
 { autoPatchelfHook
 , fetchurl
+, fzf
 , git
 , gmp
 , installShellFiles
@@ -43,7 +44,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  milestone_id = "M2j";
+  milestone_id = "M2k";
   version = "1.0.${milestone_id}-alpha";
 
   src =
@@ -53,8 +54,8 @@ stdenv.mkDerivation rec {
       # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
       # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M2j/ucm-linux.tar.gz
       srcArgs = if (stdenv.isDarwin) then
-        { os = "macos"; sha256 = "0lrj37mfqzwg9n757ymjb440jx51kj1s8g6qv9vis9pxckmy0m08"; }
-      else { os = "linux"; sha256 = "0qvin1rlkjwijchsijq3vbnn4injawchh2w97kyq7i3idh8ccl59"; };
+        { os = "macos"; sha256 = "0cwm5whw3cjhixxczz565bx7wqc5bq3sg0q3id1c3rqyi6vp8zjm"; }
+      else { os = "linux"; sha256 = "0yc0i5cavq4wav87g3j6pjal087hy3272196man0bvqw3wsi0fsm"; };
     in
       fetchurl {
         url = srcUrl srcArgs.os;
@@ -68,7 +69,7 @@ stdenv.mkDerivation rec {
   doInstallCheck = true;
 
   nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
-  buildInputs = [ git less ] ++ lib.optionals (!stdenv.isDarwin) [ ncurses5 zlib gmp ];
+  buildInputs = [ git less fzf ncurses5 zlib ] ++ lib.optionals (!stdenv.isDarwin) [ gmp ];
 
   binPath = lib.makeBinPath buildInputs;
 
