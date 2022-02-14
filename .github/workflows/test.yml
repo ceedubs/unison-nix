@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v12
+    - uses: cachix/install-nix-action@v16
     - run: |
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm version
