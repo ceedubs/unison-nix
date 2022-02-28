@@ -41,11 +41,11 @@
     "unison": {
       "flake": false,
       "locked": {
-        "lastModified": 1636089176,
-        "narHash": "sha256-5YR5/KQ+lclhbkDt3+PrrNU6mTbx/18rJ56Cf6fVaEc=",
+        "lastModified": 1646077194,
+        "narHash": "sha256-USM4z+69F1W7AaufoaUUhQvgIqnq82ZIycRotx06Ljs=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "13a9ec882dc436c78e38668c4d12a796cef4fdc3",
+        "rev": "ef5d4296218acec57a0fe16f2e8b164de90bcb00",
         "type": "github"
       },
       "original": {
