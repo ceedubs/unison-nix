@@ -13,5 +13,5 @@ jobs:
     - run: |
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm version
-        echo "pull https://github.com/ceedubs/unison-foldl:.trunk .tempfoldl" | \
+        echo "pull https://github.com/ceedubs/unison-dev:v3:.foldl.trunk .ceedubs.foldl" | \
           PATH='' ./result/bin/ucm --no-base
