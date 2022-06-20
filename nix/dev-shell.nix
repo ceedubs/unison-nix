@@ -1,4 +1,4 @@
-{ autoPatchelfHook, fzf, glibcLocales, git, gmp, less, mkShell, ormolu, stack, stdenv, darwin, zlib }:
+{ autoPatchelfHook, fzf, glibcLocales, git, gmp, less, mkShell, ncurses, ormolu, stack, stdenv, darwin, zlib }:
 
 mkShell {
   description = "Support for developing the compiler/tooling for the Unison programming language";
@@ -10,6 +10,7 @@ mkShell {
   buildInputs = [
     git
     less
+    ncurses
     zlib
     zlib.dev
     zlib.out

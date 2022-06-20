@@ -33,6 +33,7 @@
 , less
 , lib
 , makeWrapper
+, ncurses
 , stdenv
 , zlib
 }:
@@ -68,7 +69,7 @@ stdenv.mkDerivation rec {
   doInstallCheck = true;
 
   nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
-  buildInputs = [ git less fzf zlib ] ++ lib.optionals (!stdenv.isDarwin) [ gmp ];
+  buildInputs = [ git less fzf ncurses zlib ] ++ lib.optionals (!stdenv.isDarwin) [ gmp ];
 
   binPath = lib.makeBinPath buildInputs;
 
