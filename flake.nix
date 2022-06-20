@@ -25,6 +25,8 @@
         unison-stack = final.callPackage ./nix/unison-stack.nix {
           unisonSrc = unison;
         };
+
+        unison-dev-shell = final.callPackage ./nix/dev-shell.nix { };
       };
     in
       flake-utils.lib.eachSystem systems (
@@ -45,7 +47,7 @@
 
               defaultPackage = ucm;
 
-              devShell = pkgs.unison-stack;
+              devShell = pkgs.unison-dev-shell;
             }
       ) // { inherit overlay; };
 }

@@ -48,7 +48,7 @@ Once you are done trying out Unison you can `rm ./result`.
   * This is named `unison-ucm` in the overlay and for older versions of Nix (pre-flakes)
 * `vim-unison`: a vim plugin providing syntax highlighting for Unison files
   * This is provided as `vimPlugins.vim-unison` in the overlay
-* `unison-stack` (experimental): includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler). To use:
+* `unison-dev-shell` (experimental): includes the dependencies (such as [Stack]) necessary to build Unison from source (useful as a development environment for working on the Unison compiler). To use:
   * `nix develop github:ceedubs/unison-nix`
   * `stack build`, `stack exec tests`, etc.
 * `overlay`: A nixpkgs overlay that adds the Unison packages in the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)

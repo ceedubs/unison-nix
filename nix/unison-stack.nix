@@ -1,7 +1,7 @@
-{ autoPatchelfHook, darwin, ghc, git, gmp, haskell, less, lib, ncurses5, ormolu, stdenv, unisonSrc ? null, zlib }:
+{ autoPatchelfHook, darwin, ghc, git, gmp, haskell, less, lib, ormolu, stdenv, unisonSrc ? null, zlib }:
 
 let
-  libs = [ git less ncurses5 zlib gmp ormolu ];
+  libs = [ git less zlib gmp ormolu ];
 
   native_libs =
     if (stdenv.isDarwin) then (with darwin.apple_sdk.frameworks; [Cocoa CoreServices])
