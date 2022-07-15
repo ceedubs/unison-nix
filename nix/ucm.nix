@@ -25,6 +25,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 { autoPatchelfHook
+, darwin-security-hack
 , fetchurl
 , fzf
 , git
@@ -70,7 +71,11 @@ stdenv.mkDerivation rec {
   doInstallCheck = true;
 
   nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
-  buildInputs = [ git less fzf ncurses zlib ] ++ lib.optionals (!stdenv.isDarwin) [ gmp ];
+
+  darwinBuildInputs = [ darwin-security-hack ];
+  nonDarwinBuildInputs = [ gmp ];
+
+  buildInputs = [ git less fzf ncurses zlib ] ++ (if (stdenv.isDarwin) then darwinBuildInputs else nonDarwinBuildInputs);
 
   binPath = lib.makeBinPath buildInputs;
 
@@ -92,10 +97,7 @@ stdenv.mkDerivation rec {
       --zsh <(${ucm} --zsh-completion-script ${ucm})
   '';
 
-  # On Macs, ucm depends on /usr/bin/security and some other stuff that I
-  # can't figure out how to provide as a Nix dependency. Skipping this test
-  # for now on darwin.
-  installCheckPhase = if (stdenv.isDarwin) then "" else ''
+  installCheckPhase = ''
     export XDG_DATA_HOME="$TMP/.local/share"
     $out/bin/ucm version | grep -q 'ucm version:' || \
       { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
