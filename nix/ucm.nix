@@ -25,6 +25,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 { autoPatchelfHook
+, darwin-security-hack
 , fetchurl
 , fzf
 , git
@@ -44,7 +45,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  milestone_id = "M3";
+  milestone_id = "M4";
   version = "1.0.${milestone_id}-alpha";
 
   src =
@@ -53,14 +54,15 @@ stdenv.mkDerivation rec {
 
       # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
       # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M3/ucm-linux.tar.gz
-      srcArgs = if (stdenv.isDarwin) then
-        { os = "macos"; sha256 = "0y20lxb0cqmfnkasy4qsdrvjzll04pn9v12srwpsvbs18jl6mj66"; }
-      else { os = "linux"; sha256 = "0bnby9mip8vsdvkv0x7h638zbhfz8xwmf2afhbx72m0hj7aiipxf"; };
+      srcArgs =
+        if (stdenv.isDarwin) then
+          { os = "macos"; sha256 = "09aiyj111zyj9wv52xf4rzjhz6ww4hfn7rknz56cynvygy6bbj03"; }
+        else { os = "linux"; sha256 = "17h416hxn8d3a43mjg61llz8pskv2k3bdqaqglvgqy9cl244kars"; };
     in
-      fetchurl {
-        url = srcUrl srcArgs.os;
-        inherit (srcArgs) sha256;
-      };
+    fetchurl {
+      url = srcUrl srcArgs.os;
+      inherit (srcArgs) sha256;
+    };
 
   # The tarball is just the prebuilt binary, in the archive root.
   sourceRoot = ".";
@@ -69,7 +71,11 @@ stdenv.mkDerivation rec {
   doInstallCheck = true;
 
   nativeBuildInputs = [ installShellFiles makeWrapper ] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
-  buildInputs = [ git less fzf ncurses zlib ] ++ lib.optionals (!stdenv.isDarwin) [ gmp ];
+
+  darwinBuildInputs = [ darwin-security-hack ];
+  nonDarwinBuildInputs = [ gmp ];
+
+  buildInputs = [ git less fzf ncurses zlib ] ++ (if (stdenv.isDarwin) then darwinBuildInputs else nonDarwinBuildInputs);
 
   binPath = lib.makeBinPath buildInputs;
 
@@ -92,6 +98,7 @@ stdenv.mkDerivation rec {
   '';
 
   installCheckPhase = ''
+    export XDG_DATA_HOME="$TMP/.local/share"
     $out/bin/ucm version | grep -q 'ucm version:' || \
       { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
     echo 'ls' | PATH="" $out/bin/ucm --no-base --codebase-create $TMP > /dev/null || \

@@ -13,6 +13,8 @@
       systems = flake-utils.lib.defaultSystems;
 
       overlay = final: prev: {
+        darwin-security-hack = final.callPackage ./nix/darwin-security-hack.nix {};
+
         unison-ucm = final.callPackage ./nix/ucm.nix {};
 
         vimPlugins = prev.vimPlugins // {
