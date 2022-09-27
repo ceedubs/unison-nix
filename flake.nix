@@ -2,7 +2,7 @@
   description = "Support for the Unison programming language";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
     flake-utils.url = "github:numtide/flake-utils";
     unison.url = "github:unisonweb/unison";
     unison.flake = false;
