@@ -2,11 +2,11 @@
   "nodes": {
     "flake-utils": {
       "locked": {
-        "lastModified": 1631561581,
-        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
         "type": "github"
       },
       "original": {
@@ -15,18 +15,34 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1650628456,
-        "narHash": "sha256-VIsBKejHEmRzEMcfkCaE1tD2ALsgp0cS750wDIsEkFo=",
+        "lastModified": 1664158485,
+        "narHash": "sha256-OJjPilaj2R0yAwjg4O96iJLWKoW2+TeLlDpk0yF73xE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9453194b4efd99f0c4b610ceff210f1f29cee4bb",
+        "rev": "058d97782ed561787a6b2186854d29c94fd4fc0c",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-21.11",
+        "ref": "nixpkgs-22.05-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-non-darwin": {
+      "locked": {
+        "lastModified": 1664328665,
+        "narHash": "sha256-MVUhaUYwzrmzD/RzTBEGIpYBmncP3JNvZMjGyXtuX/w=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0c97cb06a5b8f1a266fea43b7335de562ea16d3b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "release-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -34,18 +50,19 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs-darwin": "nixpkgs-darwin",
+        "nixpkgs-non-darwin": "nixpkgs-non-darwin",
         "unison": "unison"
       }
     },
     "unison": {
       "flake": false,
       "locked": {
-        "lastModified": 1646077194,
-        "narHash": "sha256-USM4z+69F1W7AaufoaUUhQvgIqnq82ZIycRotx06Ljs=",
+        "lastModified": 1664310500,
+        "narHash": "sha256-DdHVtIZiUOKuE+0K13Cu6KIcZiXLoJ7DA4Tw+JfodNk=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "ef5d4296218acec57a0fe16f2e8b164de90bcb00",
+        "rev": "69699393e1451f93361fd193c657f3299f1f89ac",
         "type": "github"
       },
       "original": {
