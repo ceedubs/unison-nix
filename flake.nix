@@ -2,13 +2,14 @@
   description = "Support for the Unison programming language";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
+    nixpkgs-non-darwin.url = "github:nixos/nixpkgs/release-22.05";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-22.05-darwin";
     flake-utils.url = "github:numtide/flake-utils";
     unison.url = "github:unisonweb/unison";
     unison.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, unison }:
+  outputs = { self, nixpkgs-non-darwin, nixpkgs-darwin, flake-utils, unison }:
     let
       systems = flake-utils.lib.defaultSystems;
 
@@ -34,6 +35,9 @@
       flake-utils.lib.eachSystem systems (
         system:
           let
+            isDarwin = sys:
+              builtins.match ".*darwin" sys != null;
+            nixpkgs = if isDarwin system then nixpkgs-darwin else nixpkgs-non-darwin;
             pkgs = import nixpkgs {
               inherit system;
               overlays = [ overlay ];
