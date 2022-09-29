@@ -45,7 +45,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  milestone_id = "M4a";
+  milestone_id = "M4b";
   version = "1.0.${milestone_id}-alpha";
 
   src =
@@ -53,11 +53,11 @@ stdenv.mkDerivation rec {
       srcUrl = os: "https://github.com/unisonweb/unison/releases/download/release/${milestone_id}/ucm-${os}.tar.gz";
 
       # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
-      # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M4a/ucm-linux.tar.gz
+      # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M4b/ucm-linux.tar.gz
       srcArgs =
         if (stdenv.isDarwin) then
-          { os = "macos"; sha256 = "17n0wvxsbp41acm8296jh4n8pssxpm1aqygz4m2z299jrh5q6zax"; }
-        else { os = "linux"; sha256 = "1dqwmlgrsn9vbl3j6wmpwiaz7rqw2s48hw9k6xk25x9q7i42f0ay"; };
+          { os = "macos"; sha256 = "1mjrwxrs29zhjivxf3xwp42mfsfawlvixf68sln00gr774n7acsj"; }
+        else { os = "linux"; sha256 = "0m8ljcc3k5w1k34ssa1dryknqj9wa7dk19ssni0yhxi1jqxdaw7m"; };
     in
     fetchurl {
       url = srcUrl srcArgs.os;
