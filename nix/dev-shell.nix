@@ -12,8 +12,6 @@ mkShell {
     less
     ncurses
     zlib
-    zlib.dev
-    zlib.out
     fzf
     glibcLocales
     gmp
