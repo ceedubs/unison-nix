@@ -1,11 +1,11 @@
-{ autoPatchelfHook, fzf, glibcLocales, git, gmp, less, mkShell, ncurses, ormolu, stack, stdenv, darwin, zlib }:
+{ fzf, glibcLocales, git, gmp, less, lib, libiconv, mkShell, ncurses, ormolu, stack, stdenv, darwin, zlib }:
 
+let
+  nativeLibs = lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Cocoa CoreServices libiconv ]);
+
+in
 mkShell {
   description = "Support for developing the compiler/tooling for the Unison programming language";
-
-  native_libs =
-    if (stdenv.isDarwin) then (with darwin.apple_sdk.frameworks; [ Cocoa CoreServices ])
-    else [ autoPatchelfHook ];
 
   buildInputs = [
     git
@@ -19,5 +19,5 @@ mkShell {
     gmp
     ormolu
     stack
-  ];
+  ] ++ nativeLibs;
 }
