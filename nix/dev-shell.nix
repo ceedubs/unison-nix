@@ -1,7 +1,16 @@
-{ fzf, glibcLocales, git, gmp, less, lib, libiconv, mkShell, ncurses, ormolu, stack, stdenv, darwin, zlib }:
+{ darwin, fzf, glibcLocales, git, gmp, less, lib, makeWrapper, mkShell, ncurses, ormolu, stack, stdenv, symlinkJoin, zlib }:
 
 let
-  nativeLibs = lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Cocoa CoreServices libiconv ]);
+  nativeLibs = lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Cocoa CoreServices ]);
+  stack-wrapped = symlinkJoin {
+    name = "stack";
+    buildInputs = [ makeWrapper ];
+    paths = [ stack ];
+    postBuild = ''
+      wrapProgram "$out/bin/stack" \
+        --add-flags "--nix"
+    '';
+  };
 
 in
 mkShell {
@@ -16,6 +25,6 @@ mkShell {
     glibcLocales
     gmp
     ormolu
-    stack
+    stack-wrapped
   ] ++ nativeLibs;
 }
