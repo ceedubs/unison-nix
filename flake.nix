@@ -14,9 +14,9 @@
       systems = flake-utils.lib.defaultSystems;
 
       overlay = final: prev: {
-        darwin-security-hack = final.callPackage ./nix/darwin-security-hack.nix {};
+        darwin-security-hack = final.callPackage ./nix/darwin-security-hack.nix { };
 
-        unison-ucm = final.callPackage ./nix/ucm.nix {};
+        unison-ucm = final.callPackage ./nix/ucm.nix { };
 
         vimPlugins = prev.vimPlugins // {
           vim-unison = final.callPackage ./nix/vim-unison.nix {
@@ -29,31 +29,37 @@
           unisonSrc = unison;
         };
 
-        unison-dev-shell = final.callPackage ./nix/dev-shell.nix { };
+        unison-dev-shell =
+          let hPkgs = final.haskell.packages."ghc8107";
+          in
+          final.callPackage ./nix/dev-shell.nix {
+            inherit (hPkgs) ghc ormolu;
+          };
       };
     in
-      flake-utils.lib.eachSystem systems (
+    flake-utils.lib.eachSystem systems
+      (
         system:
-          let
-            isDarwin = sys:
-              builtins.match ".*darwin" sys != null;
-            nixpkgs = if isDarwin system then nixpkgs-darwin else nixpkgs-non-darwin;
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = [ overlay ];
-            };
-            ucm = pkgs.unison-ucm;
-          in
-            {
-              packages = {
-                inherit ucm;
+        let
+          isDarwin = sys:
+            builtins.match ".*darwin" sys != null;
+          nixpkgs = if isDarwin system then nixpkgs-darwin else nixpkgs-non-darwin;
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ overlay ];
+          };
+          ucm = pkgs.unison-ucm;
+        in
+        {
+          packages = {
+            inherit ucm;
 
-                vim-unison = pkgs.vimPlugins.vim-unison;
-              };
+            vim-unison = pkgs.vimPlugins.vim-unison;
+          };
 
-              defaultPackage = ucm;
+          defaultPackage = ucm;
 
-              devShell = pkgs.unison-dev-shell;
-            }
+          devShell = pkgs.unison-dev-shell;
+        }
       ) // { inherit overlay; };
 }
