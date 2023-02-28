@@ -25,16 +25,6 @@
           };
         };
 
-        unison-stack = final.callPackage ./nix/unison-stack.nix {
-          unisonSrc = unison;
-        };
-
-        unison-dev-shell =
-          let hPkgs = final.haskell.packages."ghc8107";
-          in
-          final.callPackage ./nix/dev-shell.nix {
-            inherit (hPkgs) ghc ormolu;
-          };
       };
     in
     flake-utils.lib.eachSystem systems
@@ -58,8 +48,6 @@
           };
 
           defaultPackage = ucm;
-
-          devShell = pkgs.unison-dev-shell;
         }
       ) // { inherit overlay; };
 }

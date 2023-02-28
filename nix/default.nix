@@ -16,6 +16,5 @@ in
 {
   unison-ucm = systemPackages.ucm;
   inherit (systemPackages) vim-unison;
-  unison-stack = flakeOutput.devShell.${system};
   overlay = flakeOutput.overlay;
 }
