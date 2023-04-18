@@ -14,10 +14,22 @@
 nix profile install github:ceedubs/unison-nix#ucm
 ```
 
+Currenty ARM builds aren't published for UCM, so if you are on an ARM-based Mac (M1/M2), then you may need to run:
+
+```
+nix profile install --system x86_64-darwin github:ceedubs/unison-nix#ucm
+```
+
 **Older versions of Nix:**
 
 ```
 nix-env -iA unison-ucm -f https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz
+```
+
+Currenty ARM builds aren't published for UCM, so if you are on an ARM-based Mac (M1/M2), then you may need to run:
+
+```
+nix-env -iA unison-ucm --arg system \"x86_64-darwin\" -f https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz
 ```
 
 ### try out Unison without installing it to your PATH/Nix profile
@@ -28,11 +40,24 @@ nix-env -iA unison-ucm -f https://github.com/ceedubs/unison-nix/archive/trunk.ta
 nix run github:ceedubs/unison-nix#ucm
 ```
 
+Currenty ARM builds aren't published for UCM, so if you are on an ARM-based Mac (M1/M2), then you may need to run:
+
+```
+nix run --system x86_64-darwin github:ceedubs/unison-nix#ucm
+```
+
 **Older versions of Nix:**
 
 ```
 nix-build https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz -A unison-ucm
 ```
+
+Currenty ARM builds aren't published for UCM, so if you are on an ARM-based Mac (M1/M2), then you may need to run:
+
+```
+nix-build https://github.com/ceedubs/unison-nix/archive/trunk.tar.gz --arg system \"x86_64-darwin\" -A unison-ucm
+```
+
 
 This will create a symlink named `result` in your current directory. Now run:
 
