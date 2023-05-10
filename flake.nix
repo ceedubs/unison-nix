@@ -17,6 +17,8 @@
 
         unison-ucm = final.callPackage ./nix/ucm.nix { };
 
+        prep-unison-scratch = final.callPackage ./nix/prep-unison-scratch {};
+
         vimPlugins = prev.vimPlugins // {
           vim-unison = final.callPackage ./nix/vim-unison.nix {
             inherit (final.vimUtils) buildVimPluginFrom2Nix;
@@ -43,6 +45,8 @@
             inherit ucm;
 
             vim-unison = pkgs.vimPlugins.vim-unison;
+
+            inherit (pkgs) prep-unison-scratch;
           };
 
           defaultPackage = ucm;
