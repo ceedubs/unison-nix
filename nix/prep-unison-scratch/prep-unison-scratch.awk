@@ -6,7 +6,7 @@ BEGIN {
 
 # comment out unique types because of https://github.com/unisonweb/unison/issues/2196
 # comment out record type modify functions because of https://github.com/unisonweb/unison/issues/3733
-/^unique |\.modify :/ {
+/^unique |^[[:blank:]]*[^\-].*\.modify :/ {
   comment=1
 }
 
