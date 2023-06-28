@@ -14,4 +14,4 @@ jobs:
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm version
         echo "pull stew.public.projects.uuid.latest lib.uuid" | \
-          PATH='' ./result/bin/ucm --no-base
+          PATH='' ./result/bin/ucm

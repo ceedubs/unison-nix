@@ -45,7 +45,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  milestone_id = "M4i";
+  milestone_id = "M5";
   version = "1.0.${milestone_id}-alpha";
 
   src =
@@ -56,8 +56,8 @@ stdenv.mkDerivation rec {
       # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M4b/ucm-linux.tar.gz
       srcArgs =
         if (stdenv.isDarwin) then
-          { os = "macos"; sha256 = "1v5qsijcrdzr4jf8r506q6hc3haz9r9s7lcwk5ica2kb3r47a2nm"; }
-        else { os = "linux"; sha256 = "0yb9pgln7fxr8gl2mi11iskjbqr2a0227w3511flbkssylxjy7s3"; };
+          { os = "macos"; sha256 = "1p52p6ijhzlpg111344sqqa5yzh0nsv9iakz5hizxab15dypf1vy"; }
+        else { os = "linux"; sha256 = "060bf2whvah6vfbc8z59rgl9gnmww00ak0kwv569ydxp9n7xrbzp"; };
     in
     fetchurl {
       url = srcUrl srcArgs.os;
@@ -101,7 +101,7 @@ stdenv.mkDerivation rec {
     export XDG_DATA_HOME="$TMP/.local/share"
     $out/bin/ucm version | grep -q 'ucm version:' || \
       { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
-    echo 'ls' | PATH="" $out/bin/ucm --no-base --codebase-create $TMP > /dev/null || \
+    echo 'ls' | PATH="" $out/bin/ucm --codebase-create $TMP > /dev/null || \
       { echo 1>&2 'ERROR: could not run ls on a fresh ucm codebase'; exit 1; }
   '';
 
