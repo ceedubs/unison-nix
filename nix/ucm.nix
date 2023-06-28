@@ -101,7 +101,7 @@ stdenv.mkDerivation rec {
     export XDG_DATA_HOME="$TMP/.local/share"
     $out/bin/ucm version | grep -q 'ucm version:' || \
       { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
-    echo 'ls' | PATH="" $out/bin/ucm --no-base --codebase-create $TMP > /dev/null || \
+    echo 'ls' | PATH="" $out/bin/ucm --codebase-create $TMP > /dev/null || \
       { echo 1>&2 'ERROR: could not run ls on a fresh ucm codebase'; exit 1; }
   '';
 
