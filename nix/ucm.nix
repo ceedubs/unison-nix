@@ -45,7 +45,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  milestone_id = "M5c";
+  milestone_id = "M5d";
   version = "1.0.${milestone_id}-alpha";
 
   src =
@@ -56,8 +56,8 @@ stdenv.mkDerivation rec {
       # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/M4b/ucm-linux.tar.gz
       srcArgs =
         if (stdenv.isDarwin) then
-          { os = "macos"; sha256 = "1s0377diyak5xbrwzw5gvs6gbhxqb21cwbmpg18rrlcm10mnqfid"; }
-        else { os = "linux"; sha256 = "1xy32nmby4gjxa7b7j4hx3vr35dfdy2kpx9w2lrsxz5gfgq9f17a"; };
+          { os = "macos"; sha256 = "0y8i00bzhlzr6zlyzngbh6zj1caakpjbyykkvxgw67k214c350iz"; }
+        else { os = "linux"; sha256 = "1836xl1mrmy51sapmxavd74bvry17ys3lqm2nwf3z4nky36d6fdj"; };
     in
     fetchurl {
       url = srcUrl srcArgs.os;
