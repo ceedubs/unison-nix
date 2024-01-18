@@ -2,7 +2,7 @@
   description = "Support for the Unison programming language";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-utils.url = "github:numtide/flake-utils";
     unison.url = "github:unisonweb/unison";
     unison.flake = false;
@@ -17,7 +17,11 @@
 
         unison-ucm = final.callPackage ./nix/ucm.nix { };
 
-        prep-unison-scratch = final.callPackage ./nix/prep-unison-scratch {};
+        buildUnisonFromTranscript = final.callPackage ./nix/build-from-transcript.nix { };
+
+        buildUnisonShareProject = final.callPackage ./nix/build-share-project.nix { };
+
+        prep-unison-scratch = final.callPackage ./nix/prep-unison-scratch { };
 
         vimPlugins = prev.vimPlugins // {
           vim-unison = final.callPackage ./nix/vim-unison.nix {
@@ -41,7 +45,7 @@
           ucm = pkgs.unison-ucm;
         in
         {
-          packages = {
+          packages = rec {
             inherit ucm;
 
             vim-unison = pkgs.vimPlugins.vim-unison;

@@ -5,11 +5,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1681202837,
-        "narHash": "sha256-H+Rh19JDwRtpVPAWp64F+rlEtxUWBAQW28eAi3SRSzg=",
+        "lastModified": 1705309234,
+        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "cfacdce06f30d2b68473a46042957675eebb3401",
+        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
         "type": "github"
       },
       "original": {
@@ -20,16 +20,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1672580127,
-        "narHash": "sha256-3lW3xZslREhJogoOkjeZtlBtvFMyxHku7I/9IVehhT8=",
+        "lastModified": 1705331948,
+        "narHash": "sha256-qjQXfvrAT1/RKDFAMdl8Hw3m4tLVvMCc8fMqzJv0pP4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0874168639713f547c05947c76124f78441ea46c",
+        "rev": "b8dd8be3c790215716e7c12b247f45ca525867e2",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-22.05",
+        "ref": "nixos-23.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -59,11 +59,11 @@
     "unison": {
       "flake": false,
       "locked": {
-        "lastModified": 1681420567,
-        "narHash": "sha256-wVBiAAxGxJiigUaSL+O8i5cVvX+lbCmP1uesJI25nVE=",
+        "lastModified": 1705440587,
+        "narHash": "sha256-FUP9nld0uhm2A8cisZeTggsrJQU7BlJ7Wkf71srbAZs=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "c2b920e12263cdea4604e4938eccef88f0a813a0",
+        "rev": "f991abe291b1bf36734d36bb9c9a7196c9ea7ffe",
         "type": "github"
       },
       "original": {
