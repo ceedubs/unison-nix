@@ -9,7 +9,8 @@
 
 let
   compiled = stdenv.mkDerivation {
-    pname = pname + "_ucm-${unison-ucm.version}";
+    # include the ucm version and transcript hash in the derivation name so it is rebuilt if either changes
+    pname = pname + "_ucm-${unison-ucm.version}_${builtins.hashFile "sha256" src}";
     inherit version;
 
     nativeBuildInputs = [ cacert ];
