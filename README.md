@@ -74,6 +74,11 @@ Once you are done trying out Unison you can `rm ./result`.
 * `vim-unison`: a vim plugin providing syntax highlighting for Unison files
   * This is provided as `vimPlugins.vim-unison` in the overlay
 * `overlay`: A nixpkgs overlay that adds the Unison packages in the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
+* `buildUnisonShareProject` a function for turning functions in a Unison Share project into executable derivations.
+  * See [unison-nix-snake](https://github.com/ceedubs/unison-nix-snake) for an example.
+  * See [nix/build-share-project.nix](nix/build-share-project.nix) for documentation.
+* `buildUnisonFromTranscript` a lower-level function for turning a Unison transcript into an executable derivation.
+  * See [nix/build-from-transcript.nix](nix/build-from-transcript.nix) for documentation.
 
 In the future this repository would be a natural home for derivations for other Unison tools.
 

@@ -2,7 +2,32 @@
 
 { pname
 , version
+
+  /**
+  A Unison transcript file. The transcript should use the ucm `compile` command to compile any desired executables into the working directory.
+
+  # Examples
+
+  ````nix
+  src = builtins.toFile "pull-and-compile-http-server.md" ''
+    ```ucm
+    .> project.create-empty tmp
+    tmp/main> pull @unison/httpserver/releases/3.0.2
+    tmp/main> compile examples.main unison-hello-server
+    ```
+    ''
+  ````
+  */
 , src
+
+  /**
+  The compiledHash is the hash of the compiled Unison code. This is needed
+  because Nix builds restrict network access unless the output hash is known
+  ahead of time (which helps with reproducibility and caching). You won't know
+  it until you run the derivation for the first time. You can just set this to
+  `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy the hash
+  labeled `got: `.
+  */
 , compiledHash
 , meta ? { }
 }:

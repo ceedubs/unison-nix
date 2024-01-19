@@ -50,7 +50,7 @@
 
             vim-unison = pkgs.vimPlugins.vim-unison;
 
-            inherit (pkgs) prep-unison-scratch;
+            inherit (pkgs) prep-unison-scratch buildUnisonFromTranscript buildUnisonShareProject;
           };
 
           defaultPackage = ucm;
