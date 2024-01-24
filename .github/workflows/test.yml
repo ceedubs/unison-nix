@@ -8,8 +8,8 @@ jobs:
         platform: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v22
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - uses: cachix/install-nix-action@6004951b182f8860210c8d6f0d808ec5b1a33d28
     - run: |
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm version
