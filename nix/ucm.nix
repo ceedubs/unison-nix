@@ -56,7 +56,7 @@ stdenv.mkDerivation rec {
       srcArgs =
         if (stdenv.isDarwin) then
           { os = "macos"; sha256 = "1y3r31mxzz4b97d0kw7g1nrpj4wl7nyrkzkqy6sakrmk9b5qkg1c"; }
-        else { os = "linux"; sha256 = "1hin7651hp5kvh5mfvzbrazfafjggppvjv9969bkrlxdrjjqf6v7"; };
+        else { os = "linux"; sha256 = "1ykssm2b66vxqxg7klynyc8qipxy9i55r7sgz3i66w7wrsckg35h"; };
     in
     fetchurl {
       url = srcUrl srcArgs.os;
