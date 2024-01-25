@@ -26,7 +26,7 @@
         vimPlugins = prev.vimPlugins // {
           vim-unison = final.vimUtils.buildVimPlugin {
             name = "vim-unison";
-            src = unison;
+            src = unison + "/editor-support/vim";
           };
         };
 
