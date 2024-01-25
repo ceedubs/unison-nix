@@ -24,9 +24,9 @@
         prep-unison-scratch = final.callPackage ./nix/prep-unison-scratch { };
 
         vimPlugins = prev.vimPlugins // {
-          vim-unison = final.callPackage ./nix/vim-unison.nix {
-            inherit (final.vimUtils) buildVimPluginFrom2Nix;
-            unisonSrc = unison;
+          vim-unison = final.buildVimPlugin {
+            name = "vim-unison";
+            src = unison;
           };
         };
 
