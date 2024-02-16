@@ -45,7 +45,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "unison-code-manager";
-  version = "0.5.16";
+  version = "0.5.17";
 
   src =
     let
@@ -55,8 +55,8 @@ stdenv.mkDerivation rec {
       # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/0.5.13/ucm-linux.tar.gz
       srcArgs =
         if (stdenv.isDarwin) then
-          { os = "macos"; sha256 = "0r01f5aykz9bx6gdzqxp5hf6xi86gx36vmprk7m34cr43dwsl6qr"; }
-        else { os = "linux"; sha256 = "04w24x9366pj23nqc0cn7x2jjmsl8kaa28zd2nji7vd0sdmklwpx"; };
+          { os = "macos"; sha256 = "0pppw4krlarzn597rfifynh7ivbxm6dhsg0vn84br1d9dyhy4sfa"; }
+        else { os = "linux"; sha256 = "1w0vrijdspn7ywgmppsvkkydhy17l91vwimz26gz0213m5sbp8mx"; };
     in
     fetchurl {
       url = srcUrl srcArgs.os;
