@@ -39,6 +39,13 @@
         name = "vim-unison";
         src = unison + "/editor-support/vim";
       };
+
+      vscode-extension = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+        name = "unison";
+        publisher = "unison-lang";
+        version = "1.2.0";
+        sha256 = "ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+      };
     };
   in
     flake-utils.lib.eachSystem systems
@@ -72,6 +79,9 @@
           unison-ucm = localPkgs.ucm;
 
           vimPlugins = prev.vimPlugins // self.overlays.vim final prev;
+
+          vscode-extensions =
+            prev.vscode-extensions // self.overlays.vscode final prev;
         };
 
         emacs = final: prev: efinal: eprev: {
@@ -92,6 +102,10 @@
         };
 
         vim = final: prev: {inherit (localPackages final) vim-unison;};
+
+        vscode = final: prev: {
+          unison-lang.unison = (localPackages final).vscode-extension;
+        };
       };
 
       ## Deprecated
@@ -178,6 +192,12 @@
                 vim = {
                   enable = true;
                   plugins = with pkgs.vimPlugins; [vim-unison];
+                };
+                vscode = {
+                  enable = true;
+                  extensions = with pkgs.vscode-extensions; [unison-lang.unison];
+                  package = pkgs.vscodium; # To avoid needing unfree packages.
+                  userSettings."unison.lspPort" = 1234;
                 };
               };
             })
