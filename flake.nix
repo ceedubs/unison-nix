@@ -33,7 +33,10 @@
     localPackages = pkgs: let
       darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
     in {
-      ucm = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
+      ucm = pkgs.callPackage ./nix/ucm.nix {
+        inherit darwin-security-hack;
+        openssl = pkgs.openssl_3_2;
+      };
 
       vim-unison = pkgs.vimUtils.buildVimPlugin {
         name = "vim-unison";
