@@ -100,10 +100,10 @@ in
     '';
 
     postFixup = ''
-      installShellCompletion --cmd ucm \
-        --bash <(${ucm} --bash-completion-script ${ucm}) \
-        --fish <(${ucm} --fish-completion-script ${ucm}) \
-        --zsh <(${ucm} --zsh-completion-script ${ucm})
+      # installShellCompletion --cmd ucm \
+      #   --bash <(${ucm} --bash-completion-script ${ucm}) \
+      #   --fish <(${ucm} --fish-completion-script ${ucm}) \
+      #   --zsh <(${ucm} --zsh-completion-script ${ucm})
     '';
 
     installCheckPhase = ''
