@@ -100,9 +100,9 @@ in
     '';
 
     postFixup = ''
-      bashCompletion=$(mktemp "${TMPDIR:-/tmp}/bash-completion.XXXXXX")
-      fishCompletion=$(mktemp "${TMPDIR:-/tmp}/fish-completion.XXXXXX")
-      zshCompletion=$(mktemp "${TMPDIR:-/tmp}/zsh-completion.XXXXXX")
+      bashCompletion=$(mktemp --tempdir bash-completion.XXXXXX")
+      fishCompletion=$(mktemp --tempdir fish-completion.XXXXXX")
+      zshCompletion=$(mktemp --tempdir zsh-completion.XXXXXX")
 
       trap 'rm -f -- "$bashCompletion"' EXIT
       trap 'rm -f -- "$fishCompletion"' EXIT
