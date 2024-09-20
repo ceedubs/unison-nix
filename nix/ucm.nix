@@ -100,26 +100,28 @@ in
     '';
 
     postFixup = ''
-      bashCompletion=$(mktemp bash-completion.XXXXXX)
-      fishCompletion=$(mktemp fish-completion.XXXXXX)
-      zshCompletion=$(mktemp zsh-completion.XXXXXX)
+      ldd $out/unison/unison
+      
+      # bashCompletion=$(mktemp bash-completion.XXXXXX)
+      # fishCompletion=$(mktemp fish-completion.XXXXXX)
+      # zshCompletion=$(mktemp zsh-completion.XXXXXX)
 
-      trap 'rm -f -- "$bashCompletion"' EXIT
-      trap 'rm -f -- "$fishCompletion"' EXIT
-      trap 'rm -f -- "$zshCompletion"' EXIT
+      # trap 'rm -f -- "$bashCompletion"' EXIT
+      # trap 'rm -f -- "$fishCompletion"' EXIT
+      # trap 'rm -f -- "$zshCompletion"' EXIT
 
-      $out/unison/unison --bash-completion-script $out/unison/unison > "$bashCompletion"
-      $out/unison/unison --fish-completion-script $out/unison/unison > "$fishCompletion"
-      $out/unison/unison --zsh-completion-script $out/unison/unison > "$zshCompletion"
+      # $out/unison/unison --bash-completion-script $out/unison/unison > "$bashCompletion"
+      # $out/unison/unison --fish-completion-script $out/unison/unison > "$fishCompletion"
+      # $out/unison/unison --zsh-completion-script $out/unison/unison > "$zshCompletion"
 
-      cat "$bashCompletion"
-      cat "$fishCompletion"
-      cat "$zshCompletion"
+      # cat "$bashCompletion"
+      # cat "$fishCompletion"
+      # cat "$zshCompletion"
 
-      installShellCompletion --cmd ucm \
-        --bash "$bashCompletion" \
-        --fish "$fishCompletion" \
-        --zsh "$zshCompletion"
+      # installShellCompletion --cmd ucm \
+      #   --bash "$bashCompletion" \
+      #   --fish "$fishCompletion" \
+      #   --zsh "$zshCompletion"
     '';
 
     installCheckPhase = ''
