@@ -100,10 +100,22 @@ in
     '';
 
     postFixup = ''
+      bashCompletion=$(mktemp "${TMPDIR:-/tmp}/bash-completion.XXXXXX")
+      fishCompletion=$(mktemp "${TMPDIR:-/tmp}/fish-completion.XXXXXX")
+      zshCompletion=$(mktemp "${TMPDIR:-/tmp}/zsh-completion.XXXXXX")
+
+      trap 'rm -f -- "$bashCompletion"' EXIT
+      trap 'rm -f -- "$fishCompletion"' EXIT
+      trap 'rm -f -- "$zshCompletion"' EXIT
+
+      $out/unison/unison --bash-completion-script ucm > "$bashCompletion"
+      $out/unison/unison --fish-completion-script ucm > "$fishCompletion"
+      $out/unison/unison --zsh-completion-script ucm > "$zshCompletion"
+
       installShellCompletion --cmd ucm \
-        --bash <($out/unison/unison --bash-completion-script ucm) \
-        --fish <($out/unison/unison --fish-completion-script ucm) \
-        --zsh <($out/unison/unison --zsh-completion-script ucm)
+        --bash "$bashCompletion" \
+        --fish "$fishCompletion" \
+        --zsh "$zshCompletion"
     '';
 
     installCheckPhase = ''
