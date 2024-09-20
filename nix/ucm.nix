@@ -97,11 +97,14 @@ in
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
         --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
+
+      makeWrapper $out/unison/unison $out/unison/unison-no-runtime \
+        --prefix PATH : ${binPath} \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
     '';
 
     postFixup = ''
-      ldd $out/unison/unison
-      $out/unison/unison --bash-completion-script $out/unison/unison
+      $out/unison/unison-no-runtime --bash-completion-script $out/unison/unison-no-runtime
 
       # bashCompletion=$(mktemp bash-completion.XXXXXX)
       # fishCompletion=$(mktemp fish-completion.XXXXXX)
