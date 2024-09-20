@@ -108,9 +108,13 @@ in
       trap 'rm -f -- "$fishCompletion"' EXIT
       trap 'rm -f -- "$zshCompletion"' EXIT
 
-      $out/unison/unison --bash-completion-script ucm > "$bashCompletion"
-      $out/unison/unison --fish-completion-script ucm > "$fishCompletion"
-      $out/unison/unison --zsh-completion-script ucm > "$zshCompletion"
+      $out/unison/unison --bash-completion-script $out/unison/unison > "$bashCompletion"
+      $out/unison/unison --fish-completion-script $out/unison/unison > "$fishCompletion"
+      $out/unison/unison --zsh-completion-script $out/unison/unison > "$zshCompletion"
+
+      cat "$bashCompletion"
+      cat "$fishCompletion"
+      cat "$zshCompletion"
 
       installShellCompletion --cmd ucm \
         --bash "$bashCompletion" \
