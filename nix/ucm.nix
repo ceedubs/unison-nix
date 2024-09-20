@@ -86,6 +86,11 @@ in
 
     binPath = lib.makeBinPath buildInputs;
 
+    runtimeDependencies =
+      if (stdenv.isDarwin)
+      then [darwin-security-hack]
+      else [gmp zlib];
+
     installPhase = ''
       mkdir -p $out/{bin,lib}
       mv runtime $out/lib/runtime
@@ -97,14 +102,10 @@ in
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
         --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
-
-      makeWrapper $out/unison/unison $out/bin/ucm-no-runtime \
-        --prefix PATH : ${binPath} \
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
     '';
 
     postFixup = ''
-      $out/unison/unison-no-runtime --bash-completion-script $out/unison/unison-no-runtime
+      $out/unison/unison --bash-completion-script $out/unison/unison
 
       # bashCompletion=$(mktemp bash-completion.XXXXXX)
       # fishCompletion=$(mktemp fish-completion.XXXXXX)
