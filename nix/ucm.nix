@@ -98,7 +98,7 @@ in
         --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
 
-      makeWrapper $out/unison/unison $out/unison/unison-no-runtime \
+      makeWrapper $out/unison/unison $out/bin/ucm-no-runtime \
         --prefix PATH : ${binPath} \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
     '';
