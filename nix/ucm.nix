@@ -101,7 +101,8 @@ in
 
     postFixup = ''
       ldd $out/unison/unison
-      
+      $out/unison/unison --bash-completion-script $out/unison/unison
+
       # bashCompletion=$(mktemp bash-completion.XXXXXX)
       # fishCompletion=$(mktemp fish-completion.XXXXXX)
       # zshCompletion=$(mktemp zsh-completion.XXXXXX)
