@@ -74,7 +74,7 @@ in
     dontConfigure = true;
     doInstallCheck = true;
 
-    nativeBuildInputs = [installShellFiles makeWrapper] ++ lib.optional (!stdenv.isDarwin) autoPatchelfHook;
+    nativeBuildInputs = [installShellFiles makeWrapper];
 
     buildInputs =
       [git less fzf ncurses zlib]
@@ -97,6 +97,8 @@ in
       mv unison $out/unison
       mv ui $out/ui
 
+      autoPatchelf $out/unison/unison
+
       makeWrapper $out/unison/unison ${ucm} \
         --prefix PATH : ${binPath} \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
@@ -105,7 +107,7 @@ in
     '';
 
     postFixup = ''
-      # $out/unison/unison --bash-completion-script $out/unison/unison
+      $out/unison/unison --bash-completion-script $out/unison/unison
 
       # bashCompletion=$(mktemp bash-completion.XXXXXX)
       # fishCompletion=$(mktemp fish-completion.XXXXXX)
