@@ -99,7 +99,7 @@ in
         --set-default UCM_WEB_UI "$out/ui"
     '';
 
-    postFixup = ''
+    postInstall = ''
       installShellCompletion --cmd ucm \
         --bash <(${ucm} --bash-completion-script ${ucm}) \
         --fish <(${ucm} --fish-completion-script ${ucm}) \
