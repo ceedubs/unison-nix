@@ -39,34 +39,41 @@
   curl,
   openssl,
   stdenv,
+  system,
   zlib,
 }: let
+  version = "0.5.28";
+
+  # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
+  # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/0.5.28/ucm-linux-x64.tar.gz
+  srcForPlatform = {
+    aarch64-darwin = {
+      sys = "macos-arm64";
+      sha256 = "0h1visfw23ny56j0z5s0f88riivzwjrfmxlkignach0qhnlq6kwi";
+    };
+    x86_64-darwin = {
+      sys = "macos-x64";
+      sha256 = "1l6a7sibhdqbcmgj0y6nwkiq5fljbllglc4dvvzhy7jlq6xp3bcm";
+    };
+    x86_64-linux = {
+      sys = "linux-x64";
+      sha256 = "0jma0vdh5dqsxbwi5yzini4pac1gzz8pwfwwgr82mpyr16m3a703";
+    };
+  };
+
+  src = let
+    srcArgs = srcForPlatform.${system};
+  in
+    fetchurl {
+      url = "https://github.com/unisonweb/unison/releases/download/release/${version}/ucm-${srcArgs.sys}.tar.gz";
+      inherit (srcArgs) sha256;
+    };
+
   ucm = "$out/bin/ucm";
 in
   stdenv.mkDerivation rec {
     pname = "unison-code-manager";
-    version = "0.5.27";
-
-    src = let
-      srcUrl = os: "https://github.com/unisonweb/unison/releases/download/release/${version}/ucm-${os}.tar.gz";
-
-      # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
-      # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/0.5.13/ucm-linux.tar.gz
-      srcArgs =
-        if (stdenv.isDarwin)
-        then {
-          os = "macos";
-          sha256 = "1id7ywyqbphcgniywmqnvnbfx55jy807z0ni7ycl2zl23yijcqbf";
-        }
-        else {
-          os = "linux";
-          sha256 = "101jl2jr95jlscs41hc6sfn5zmlff22b03alryx1qjjh6a1wrklf";
-        };
-    in
-      fetchurl {
-        url = srcUrl srcArgs.os;
-        inherit (srcArgs) sha256;
-      };
+    inherit src version;
 
     # The tarball is just the prebuilt binary, in the archive root.
     sourceRoot = ".";
@@ -94,7 +101,7 @@ in
 
       makeWrapper $out/unison/unison ${ucm} \
         --prefix PATH : ${binPath} \
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libb2 openssl curl ]} \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [libb2 openssl curl]} \
         --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
     '';
@@ -120,7 +127,7 @@ in
       homepage = "https://unisonweb.org/";
       license = with licenses; [mit bsd3];
       maintainers = [maintainers.ceedubs];
-      platforms = ["x86_64-darwin" "x86_64-linux"];
+      platforms = attrNames srcForPlatform;
       mainProgram = "ucm";
     };
   }
