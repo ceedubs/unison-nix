@@ -60,7 +60,6 @@
         default = final: prev: let
           localPkgs = localPackages final;
         in {
-
           emacsPackagesFor = emacs:
             (prev.emacsPackagesFor emacs).overrideScope'
             (self.overlays.emacs final prev);
@@ -78,17 +77,18 @@
         emacs = final: prev: efinal: eprev: {
           unison-ts-mode = let
             version = "1.0.0-rc.2";
-          in efinal.trivialBuild {
-            inherit version;
-            pname = "unison-ts-mode";
+          in
+            efinal.trivialBuild {
+              inherit version;
+              pname = "unison-ts-mode";
 
-            src = final.fetchFromGitHub {
-              owner = "fmguerreiro";
-              repo = "unison-ts-mode";
-              rev = "v${version}";
-              sha256 = "R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
+              src = final.fetchFromGitHub {
+                owner = "fmguerreiro";
+                repo = "unison-ts-mode";
+                rev = "v${version}";
+                sha256 = "R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
+              };
             };
-          };
         };
 
         vim = final: prev: {inherit (localPackages final) vim-unison;};
@@ -183,6 +183,6 @@
             })
           ];
         };
-      }) ["x86_64-darwin" "x86_64-linux"]);
+      }) ["aarch64-darwin" "x86_64-darwin" "x86_64-linux"]);
     };
 }
