@@ -42,22 +42,22 @@
   system,
   zlib,
 }: let
-  version = "0.5.29";
+  version = "0.5.30";
 
   # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
   # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/0.5.29/ucm-linux-x64.tar.gz
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      sha256 = "06zxfmxb00jj3fx5kvrv8hzxl5b9sj55ckbd57jfzypw54ya2b49";
+      sha256 = "1x49i2jm8zlb7b7khximrvz6k0rkx1lkdd80kvvi3synxj2230al";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      sha256 = "0wclrappp6b5pw72nnkd2rjdjfz91zkfvhghqvyax3mviva33sa6";
+      sha256 = "1pjlmlv5zn6m42fcps5iws72pp8hw1ckk9l8br3ncz5xgmy364fr";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      sha256 = "1vfxs2x17bmc2g8vkky9jpc87lpc3dvbiq9kb3ay53xx70yhlnvx";
+      sha256 = "1sxmrcllpdwv3013byfhgk23gms2y2ipi8mcgxnbskmc9qa964r2";
     };
   };
 
