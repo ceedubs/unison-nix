@@ -69,6 +69,7 @@
       inherit (srcArgs) sha256;
     };
 
+  unison = "$out/unison/unison";
   ucm = "$out/bin/ucm";
 in
   stdenv.mkDerivation rec {
@@ -94,23 +95,27 @@ in
     binPath = lib.makeBinPath buildInputs;
 
     installPhase = ''
+      runHook preInstall
+
       mkdir -p $out/{bin,lib}
       mv runtime $out/lib/runtime
       mv unison $out/unison
       mv ui $out/ui
 
-      makeWrapper $out/unison/unison ${ucm} \
+      makeWrapper ${unison} ${ucm} \
         --prefix PATH : ${binPath} \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [libb2 openssl curl]} \
         --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
+
+      runHook postInstall
     '';
 
     postInstall = ''
       installShellCompletion --cmd ucm \
-        --bash <(${ucm} --bash-completion-script ${ucm}) \
-        --fish <(${ucm} --fish-completion-script ${ucm}) \
-        --zsh <(${ucm} --zsh-completion-script ${ucm})
+        --bash <(${unison} --bash-completion-script ${unison}) \
+        --fish <(${unison} --fish-completion-script ${unison}) \
+        --zsh <(${unison} --zsh-completion-script ${unison})
     '';
 
     installCheckPhase = ''
