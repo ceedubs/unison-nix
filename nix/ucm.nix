@@ -111,13 +111,6 @@ in
       runHook postInstall
     '';
 
-    postInstall = ''
-      installShellCompletion --cmd ucm \
-        --bash <(${unison} --bash-completion-script ${unison}) \
-        --fish <(${unison} --fish-completion-script ${unison}) \
-        --zsh <(${unison} --zsh-completion-script ${unison})
-    '';
-
     installCheckPhase = ''
       export XDG_DATA_HOME="$TMP/.local/share"
       echo "ucm version:"
