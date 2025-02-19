@@ -42,22 +42,22 @@
   system,
   zlib,
 }: let
-  version = "0.5.33";
+  version = "0.5.34";
 
-  # sha256 can be calculated with `nix-prefetch-url <url>`. For example:
-  # nix-prefetch-url https://github.com/unisonweb/unison/releases/download/release/0.5.29/ucm-linux-x64.tar.gz
+  # hash can be calculated with `nix store prefetch-file <url>`. For example:
+  # nix store prefetch-file https://github.com/unisonweb/unison/releases/download/release/0.5.34/ucm-linux-x64.tar.gz
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      sha256 = "17lgjl08fd9s418wi2nsih7q1whm089g061v3i942439zlr90yhd";
+      hash = "sha256-WbnhcGE5P3i8tm6+YqHM1JUcbV12JIWsbcmCSK/vCzw=";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      sha256 = "05l277lqf7mj69a087qfl6f4ik05xnyvhdpkhh147pgcx29dpwbx";
+      hash = "sha256-MFWZ4eGDG5GRo+WfA25QVtAvpIRU2sy2sEgjF1hfFUs=";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      sha256 = "0fg491l6cjpkjnv0cax43qnbaghsrlfzsyn9dfqwqgzpgr16wh7s";
+      hash = "sha256-fCyspQIP/2+VhHKGiDpq1qnw696fGLqUKBqAoYaQgIY=";
     };
   };
 
@@ -66,7 +66,7 @@
   in
     fetchurl {
       url = "https://github.com/unisonweb/unison/releases/download/release/${version}/ucm-${srcArgs.sys}.tar.gz";
-      inherit (srcArgs) sha256;
+      inherit (srcArgs) hash;
     };
 
   unison = "$out/unison/unison";
