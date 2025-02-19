@@ -49,15 +49,15 @@
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      sha256 = "17lgjl08fd9s418wi2nsih7q1whm089g061v3i942439zlr90yhd";
+      sha256 = "0g0bxypli0n9dnn8a93nbmnir5flrjhn5gkfnsy7hgrrc5qf3far";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      sha256 = "05l277lqf7mj69a087qfl6f4ik05xnyvhdpkhh147pgcx29dpwbx";
+      sha256 = "0jqmbxc1f8s8n2vcrnjlhjj2zl2na1p077z5lf8r26w3w7hrjm9h";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      sha256 = "0fg491l6cjpkjnv0cax43qnbaghsrlfzsyn9dfqwqgzpgr16wh7s";
+      sha256 = "11l0j23a300s52abl64zvvmz1afnd8x8i1kjhjanzzqg0ajsqb3w";
     };
   };
 
