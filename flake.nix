@@ -35,9 +35,22 @@
     in {
       ucm = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
+      tree-sitter-grammar = pkgs.tree-sitter.buildGrammar {
+        language = "unison";
+        version = tree-sitter-unison-github.rev;
+        src = pkgs.fetchFromGitHub tree-sitter-unison-github;
+      };
+
       vim-unison = pkgs.vimUtils.buildVimPlugin {
         name = "vim-unison";
         src = unison + "/editor-support/vim";
+      };
+
+      vscode-extension = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+        name = "unison";
+        publisher = "unison-lang";
+        version = "1.2.0";
+        sha256 = "ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
       };
     };
   in
@@ -65,13 +78,17 @@
             (self.overlays.emacs final prev);
 
           tree-sitter = prev.tree-sitter.override {
-            extraGrammars = self.lib.tree-sitter-grammars final;
+            extraGrammars = self.overlays.tree-sitter final prev;
           };
 
           ## Renamed to replace the `unison-ucm` included in Nixpkgs.
           unison-ucm = localPkgs.ucm;
 
-          vimPlugins = prev.vimPlugins // self.overlays.vim final prev;
+          vimPlugins =
+            prev.vimPlugins // self.overlays.vim final prev prev.vimPlugins;
+
+          vscode-extensions =
+            prev.vscode-extensions // self.overlays.vscode final prev;
         };
 
         emacs = final: prev: efinal: eprev: {
@@ -91,7 +108,44 @@
             };
         };
 
-        vim = final: prev: {inherit (localPackages final) vim-unison;};
+        ## This is automatically added to the available `tree-sitter` grammars
+        ## in the default overlay. However, `extraGrammars` doesn’t compose, so
+        ## if another overlay also provides a grammar, one will overwrite the
+        ## other. The way around that is to explicitly combine the grammars in a
+        ## final overlay,
+        ##
+        ##    final: prev: {
+        ##      tree-sitter = prev.tree-sitter.override {
+        ##        extraGrammars =
+        ##          unison.overlays.tree-sitter final prev
+        ##          // <grammars from other flakes>;
+        ##      };
+        ##    }
+        ##
+        ## NB: tree-sitter doesn’t seem to be able to take grammar derivations,
+        ##     so we give it the source.
+        tree-sitter = final: prev: {
+          tree-sitter-unison.src =
+            final.fetchFromGitHub tree-sitter-unison-github;
+        };
+
+        vim = final: prev: vpkgs: let
+          localPkgs = localPackages final;
+        in {
+          inherit (localPkgs) vim-unison;
+
+          nvim-treesitter = vpkgs.nvim-treesitter.overrideAttrs (old: {
+            builtGrammars =
+              old.builtGrammars
+              // {
+                unison = localPkgs.tree-sitter-grammar;
+              };
+          });
+        };
+
+        vscode = final: prev: {
+          unison-lang.unison = (localPackages final).vscode-extension;
+        };
       };
 
       ## Deprecated
@@ -110,78 +164,26 @@
             buildUnisonFromTranscript = buildUnisonFromTranscript pkgs;
           };
 
-        ## This is automatically added to the available `tree-sitter` grammars
-        ## in the default overlay. However, `extraGrammars` doesn’t compose, so
-        ## if another overlay also provides a grammar, one will overwrite the
-        ## other. The way around that is to explicitly combine the grammars in a
-        ## final overlay,
+        ## Emacs’s `treesit` package wants to pull grammars from Git repos, so
+        ## this provides the Emacs Lisp form to pull the same grammer packaged
+        ## in this flake.
         ##
-        ##    final: prev: {
-        ##      tree-sitter = prev.tree-sitter.override {
-        ##        extraGrammars =
-        ##          unison-nix.lib.tree-sitter-grammars final
-        ##          // <grammars from other flakes>;
-        ##      };
-        ##    }
-        tree-sitter-grammars = pkgs: {
-          tree-sitter-unison.src =
-            pkgs.fetchFromGitHub tree-sitter-unison-github;
-        };
+        ## See ./nix/home.nix for example usage.
+        ##
+        ## TODO: Convince Emacs to use the packaged grammar.
+        emacsTreesitLanguageSource = ''
+          (unison
+           "git@github.com:${tree-sitter-unison-github.owner}/${tree-sitter-unison-github.repo}.git"
+           "${tree-sitter-unison-github.rev}")
+        '';
       };
 
       homeConfigurations = builtins.listToAttrs (map (system: {
         name = "${system}-example";
         value = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = [self.overlays.default];
-          };
-          modules = [
-            ({pkgs, ...}: {
-              home = {
-                packages = [
-                  (pkgs.tree-sitter.withPlugins (tpkgs: [
-                    tpkgs.tree-sitter-unison
-                  ]))
-                  pkgs.unison-ucm
-                ];
-                stateVersion = "23.11";
-                username = "example";
-                homeDirectory = "/home/example";
-              };
-              programs = {
-                emacs = {
-                  enable = true;
-                  extraConfig = ''
-                    (use-package eglot
-                      :config
-                      (add-to-list
-                       'eglot-server-programs
-                       '((unison-ts-mode unisonlang-mode) "127.0.0.1" 5757)))
-                    ;; TODO: This should be made available via
-                    ;;      `pkgs.tree-sitter.withPlugins` above, but they
-                    ;;       currently don’t align, so you need this, then run
-                    ;;      `M-x treesit-install-language-grammar` and select
-                    ;;      “unison”.
-                    (use-package treesit
-                      :config
-                      (add-to-list
-                       'treesit-language-source-alist
-                       '(unison
-                         "git@github.com:${tree-sitter-unison-github.owner}/${tree-sitter-unison-github.repo}.git"
-                         "${tree-sitter-unison-github.rev}")))
-                    (use-package unison-ts-mode)
-                  '';
-                  extraPackages = epkgs: [epkgs.unison-ts-mode];
-                  package = pkgs.emacs29;
-                };
-                vim = {
-                  enable = true;
-                  plugins = with pkgs.vimPlugins; [vim-unison];
-                };
-              };
-            })
-          ];
+          extraSpecialArgs.unison = self;
+          modules = [./nix/home.nix];
+          pkgs = nixpkgs.legacyPackages.${system};
         };
       }) ["aarch64-darwin" "x86_64-darwin" "x86_64-linux"]);
     };
