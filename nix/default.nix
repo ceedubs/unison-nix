@@ -14,7 +14,7 @@
 
   systemPackages = flakeOutput.packages.${system};
 in {
-  unison-ucm = systemPackages.ucm;
+  unison-ucm = systemPackages.ucm-bin;
   inherit (systemPackages) vim-unison;
   overlay = flakeOutput.overlay;
 }

@@ -1,6 +1,13 @@
 {
   description = "Support for the Unison programming language";
 
+   nixConfig = {
+    extra-substituters = ["https://unison.cachix.org"];
+    extra-trusted-public-keys = [
+      "unison.cachix.org-1:i1DUFkisRPVOyLp/vblDsbsObmyCviq/zs6eRuzth3k="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     flake-utils.url = "github:numtide/flake-utils";
@@ -9,8 +16,13 @@
       url = "github:nix-community/home-manager/release-24.11";
     };
     unison = {
-      flake = false;
-      url = "github:unisonweb/unison";
+      ## NB: This doesn’t override Nixpkgs, because Unison relies heavily on
+      ##     haskell.nix and its own Cachix cache.
+      inputs.flake-utils.follows = "flake-utils";
+      ## NB: Before upgrading this, make sure the release you upgrade to is
+      ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
+      ##     all supported systems.
+      url = "github:unisonweb/unison/release/0.5.36";
     };
   };
 
@@ -33,7 +45,9 @@
     localPackages = pkgs: let
       darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
     in {
-      ucm = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
+      ucm = unison.packages.${pkgs.system}.default;
+
+      ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
       tree-sitter-grammar = pkgs.tree-sitter.buildGrammar {
         language = "unison";
@@ -41,6 +55,8 @@
         src = pkgs.fetchFromGitHub tree-sitter-unison-github;
       };
 
+      ## TODO: Move this to Unison proper, and then just re-export it from here.
+      ##       Then we can avoid the non-flake usage of the Unison flake.
       vim-unison = pkgs.vimUtils.buildVimPlugin {
         name = "vim-unison";
         src = unison + "/editor-support/vim";
@@ -60,7 +76,7 @@
         pkgs = import nixpkgs {inherit system;};
       in {
         packages =
-          {default = self.packages.${system}.ucm;} // localPackages pkgs;
+          {default = self.packages.${system}.ucm-bin;} // localPackages pkgs;
 
         ## Deprecated
         defaultPackage = self.packages.${system}.default;
@@ -82,7 +98,7 @@
           };
 
           ## Renamed to replace the `unison-ucm` included in Nixpkgs.
-          unison-ucm = localPkgs.ucm;
+          unison-ucm = localPkgs.ucm-bin;
 
           vimPlugins =
             prev.vimPlugins // self.overlays.vim final prev prev.vimPlugins;
@@ -154,7 +170,7 @@
       lib = let
         buildUnisonFromTranscript = pkgs:
           pkgs.callPackage ./nix/build-from-transcript.nix {
-            inherit (localPackages pkgs) ucm;
+            ucm = (localPackages pkgs).ucm-bin;
           };
       in {
         inherit buildUnisonFromTranscript;
