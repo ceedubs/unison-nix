@@ -11,7 +11,7 @@
 **If your version of Nix supports [Nix flakes]**:
 
 ```
-nix profile install github:ceedubs/unison-nix#ucm
+nix profile install github:ceedubs/unison-nix#ucm-bin
 ```
 
 **Use from home-manager:**
@@ -49,7 +49,7 @@ nix-env -iA unison-ucm -f https://github.com/ceedubs/unison-nix/archive/trunk.ta
 **If your version of Nix supports [Nix flakes]:**
 
 ```
-nix run github:ceedubs/unison-nix#ucm
+nix run github:ceedubs/unison-nix#ucm-bin
 ```
 
 **Older versions of Nix:**
@@ -68,8 +68,9 @@ Once you are done trying out Unison you can `rm ./result`.
 
 ## available packages/tools
 
-* `ucm`: the Unison code manager
+* `ucm-bin`: a binary release of the Unison code manager
   * This is named `unison-ucm` in the overlay and for older versions of Nix (pre-flakes)
+* `ucm`: a release of the Unison code manager built from source (without some of the niceties provided by `ucm-bin`)
 * `vim-unison`: a vim plugin providing syntax highlighting for Unison files
   * This is provided as `vimPlugins.vim-unison` in the overlay
 * `overlay`: A nixpkgs overlay that adds the Unison packages in the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
