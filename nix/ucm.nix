@@ -42,22 +42,22 @@
   system,
   zlib,
 }: let
-  version = "0.5.36";
+  version = "0.5.37";
 
   # hash can be calculated with `nix store prefetch-file <url>`. For example:
   # nix store prefetch-file https://github.com/unisonweb/unison/releases/download/release/0.5.34/ucm-linux-x64.tar.gz
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      hash = "sha256-GH0qZtb29qDxL39nArYSzCQ50/ssPOiN9CXnAvb9uVQ=";
+      hash = "sha256-cqsh1/H31ibyA8yr6pNdRAaH1nidobzt77oJq1N2icQ=";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      hash = "sha256-seL8Ey20KYVsOLugGvfVXXIIVdv7q04PYXh3c6MoZDk=";
+      hash = "sha256-9a8TJK6D5BU5TugQmYEcaFv5Hu9eeD463g23aSyKKQU=";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      hash = "sha256-Zb91ixXd3ueQj6+YjC9Wgq3PnfcKBKZZdCJfS0nQOV4=";
+      hash = "sha256-eAqaE38M/spM3t0Ar/sJwGNPaNT/P9Lfn2ZIsW75kS8=";
     };
   };
 
