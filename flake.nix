@@ -62,11 +62,18 @@
         src = unison + "/editor-support/vim";
       };
 
-      vscode-extension = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+      vscode-lang = pkgs.vscode-utils.extensionFromVscodeMarketplace {
         name = "unison";
         publisher = "unison-lang";
         version = "1.2.0";
         hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+      };
+
+      vscode-ui = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+        name = "unison-ui";
+        publisher = "TomSherman";
+        version = "0.1.5";
+        hash = "sha256-PrbeIxhHWas35XfGnVSEMh4rH4uk+4Sls6syj4H29eQ=";
       };
     };
   in
@@ -159,8 +166,11 @@
           });
         };
 
-        vscode = final: prev: {
-          unison-lang.unison = (localPackages final).vscode-extension;
+        vscode = final: prev: let
+          localPkgs = localPackages final;
+        in {
+          TomSherman.unison-ui = localPkgs.vscode-ui;
+          unison-lang.unison = localPkgs.vscode-lang;
         };
       };
 
