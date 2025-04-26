@@ -39,7 +39,7 @@
       owner = "kylegoetz";
       repo = "tree-sitter-unison";
       rev = "1.1.4";
-      sha256 = "89vFguMlPfKzQ4nmMNdTNFcEiCYH0eSws87Llm88e+I=";
+      hash = "sha256-89vFguMlPfKzQ4nmMNdTNFcEiCYH0eSws87Llm88e+I=";
     };
 
     localPackages = pkgs: let
@@ -66,7 +66,7 @@
         name = "unison";
         publisher = "unison-lang";
         version = "1.2.0";
-        sha256 = "ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+        hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
       };
     };
   in
@@ -119,7 +119,7 @@
                 owner = "fmguerreiro";
                 repo = "unison-ts-mode";
                 rev = "v${version}";
-                sha256 = "R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
+                hash = "sha256-R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
               };
             };
         };
