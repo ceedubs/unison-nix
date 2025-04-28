@@ -39,7 +39,7 @@
       owner = "kylegoetz";
       repo = "tree-sitter-unison";
       rev = "1.1.4";
-      sha256 = "89vFguMlPfKzQ4nmMNdTNFcEiCYH0eSws87Llm88e+I=";
+      hash = "sha256-89vFguMlPfKzQ4nmMNdTNFcEiCYH0eSws87Llm88e+I=";
     };
 
     localPackages = pkgs: let
@@ -62,11 +62,18 @@
         src = unison + "/editor-support/vim";
       };
 
-      vscode-extension = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+      vscode-lang = pkgs.vscode-utils.extensionFromVscodeMarketplace {
         name = "unison";
         publisher = "unison-lang";
         version = "1.2.0";
-        sha256 = "ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+        hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+      };
+
+      vscode-ui = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+        name = "unison-ui";
+        publisher = "TomSherman";
+        version = "0.1.5";
+        hash = "sha256-PrbeIxhHWas35XfGnVSEMh4rH4uk+4Sls6syj4H29eQ=";
       };
     };
   in
@@ -119,7 +126,7 @@
                 owner = "fmguerreiro";
                 repo = "unison-ts-mode";
                 rev = "v${version}";
-                sha256 = "R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
+                hash = "sha256-R3A1z8wzhDCy3KGZ7ZMbAed3VmKwdExsUyxD2X8ZtoM=";
               };
             };
         };
@@ -159,8 +166,11 @@
           });
         };
 
-        vscode = final: prev: {
-          unison-lang.unison = (localPackages final).vscode-extension;
+        vscode = final: prev: let
+          localPkgs = localPackages final;
+        in {
+          TomSherman.unison-ui = localPkgs.vscode-ui;
+          unison-lang.unison = localPkgs.vscode-lang;
         };
       };
 

@@ -73,6 +73,9 @@ Once you are done trying out Unison you can `rm ./result`.
 * `ucm`: a release of the Unison code manager built from source (without some of the niceties provided by `ucm-bin`)
 * `vim-unison`: a vim plugin providing syntax highlighting for Unison files
   * This is provided as `vimPlugins.vim-unison` in the overlay
+* VS Code extensions
+  * [unison-lang.unison](https://marketplace.visualstudio.com/items?itemName=unison-lang.unison) – the official extension from the [Unison](https://www.unison-lang.org/) team, provides syntax highlighting and LSP support
+  * [TomSherman.unison-ui](https://marketplace.visualstudio.com/items?itemName=TomSherman.unison-ui) – adds a codebase explorer sidebar
 * `overlay`: A nixpkgs overlay that adds the Unison packages in the relevant places (ex: `vim-unison` in `vimPlugins.vim-unison`)
 * `buildUnisonShareProject` a function for turning functions in a Unison Share project into executable derivations.
   * See [unison-nix-snake](https://github.com/ceedubs/unison-nix-snake) for an example.

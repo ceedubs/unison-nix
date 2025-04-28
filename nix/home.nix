@@ -73,8 +73,9 @@
   programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [
-      ## → Install the VS Code Unison extension.
+      ## → Install the VS Code Unison extensions.
       unison-lang.unison
+      TomSherman.unison-ui
     ];
     package = pkgs.vscodium; # To avoid needing unfree packages.
     ## → Configure the VS Code Unison extension.
