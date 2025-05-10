@@ -38,8 +38,8 @@
     tree-sitter-unison-github = {
       owner = "kylegoetz";
       repo = "tree-sitter-unison";
-      rev = "1.1.4";
-      hash = "sha256-89vFguMlPfKzQ4nmMNdTNFcEiCYH0eSws87Llm88e+I=";
+      rev = "2.0.1";
+      hash = "sha256-0HOLtLh1zRdaGQqchT5zFegWKJHkQe9r7DGKL6sSkPo=";
     };
 
     localPackages = pkgs: let
