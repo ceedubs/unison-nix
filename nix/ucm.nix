@@ -42,6 +42,7 @@
   system,
   zlib,
 }: let
+  ## NB: When changing this, also change `inputs.unison.url` in flake.nix.
   version = "0.5.40";
 
   # hash can be calculated with `nix store prefetch-file <url>`. For example:
