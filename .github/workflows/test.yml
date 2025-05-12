@@ -20,7 +20,7 @@ jobs:
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm --version
     - run: |
-        nix build .#ucm
+        nix build --no-update-lock-file .#ucm
         PATH='' ./result/bin/unison --version
   test_homeConfiguration:
     runs-on: ubuntu-24.04
