@@ -1,5 +1,5 @@
 {
-  buildUnisonFromTranscript,
+  buildFromTranscript,
   lib,
 }:
 /*
@@ -42,18 +42,17 @@ Compile functions from a project hosted on Unison Share into executables.
 } @ args: let
   compileCommands =
     lib.attrsets.mapAttrsToList
-    (executableName: functionName: "tmp/main> compile ${functionName} ${executableName}")
+    (executableName: functionName: "scratch/main> compile ${functionName} ${executableName}")
     executables;
 
   transcript = ''
     ```ucm
-    .> project.create-empty tmp
-    tmp/main> pull @${userHandle}/${projectName}/releases/${projectReleaseVersion}
+    scratch/main> pull @${userHandle}/${projectName}/releases/${projectReleaseVersion}
     ${lib.strings.concatStringsSep "\n" compileCommands}
     ```
   '';
 in
-  buildUnisonFromTranscript {
+  buildFromTranscript {
     inherit pname version compiledHash meta;
 
     src = builtins.toFile "${pname}-compile-transcript-${version}.md" transcript;

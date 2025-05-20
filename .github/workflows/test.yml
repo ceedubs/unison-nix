@@ -2,6 +2,18 @@ on:
   pull_request:
   push:
 jobs:
+  check_flake:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+    - uses: nixbuild/nix-quick-install-action@25aff27c252e0c8cdda3264805f7b6bcd92c8718 # # v29
+    - uses: nix-community/cache-nix-action@8351fb9f51c580c96c509987ebb99e38aed956ce # 5.2.1
+      with:
+        # restore and save a cache using this key
+        primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+        # if there's no cache hit, restore a cache by this prefix
+        restore-prefixes-first-match: nix-${{ runner.os }}-
+    - run: nix flake check
   test_ucm:
     strategy:
       matrix:
