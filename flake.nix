@@ -96,7 +96,7 @@
     flake-utils.lib.eachSystem systems
     (
       system: let
-        pkgs = import nixpkgs {inherit system;};
+        pkgs = nixpkgs.legacyPackages.${system};
       in {
         packages =
           {default = self.packages.${system}.ucm-bin;} // local.packages pkgs;
