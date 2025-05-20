@@ -105,6 +105,30 @@
         ## Deprecated
         defaultPackage = self.packages.${system}.default;
 
+        checks = {
+          # A simple example: create an executable from a Unison Share project
+          snake = let
+            newPkgs = pkgs.appendOverlays [self.overlays.default];
+          in newPkgs.unison.lib.buildShareProject {
+            pname = "snake";
+            version = "0.0.4";
+            userHandle = "runarorama";
+            projectName = "terminus";
+
+            # The compiledHash is the hash of the compiled Unison code. This
+            # is needed because Nix builds restrict network access unless the
+            # output hash is known ahead of time (which helps with
+            # reproducibility and caching). You won't know it until you run
+            # the derivation for the first time. You can just set this to
+            # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
+            # the hash labeled `got: `.
+            compiledHash = "sha256-6EnFUI5+9Zmyt7kDUjIvYR6q0Q4Ps5lNENZhghYuJJ0=";
+
+            # A mapping of executable names to Unison functions.
+            executables = {"snake" = "examples.snake.main";};
+          };
+        };
+
         formatter = pkgs.alejandra;
       }
     )
