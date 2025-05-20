@@ -15,9 +15,8 @@
   ````nix
   src = builtins.toFile "pull-and-compile-http-server.md" ''
     ```ucm
-    .> project.create-empty tmp
-    tmp/main> pull @unison/httpserver/releases/3.0.2
-    tmp/main> compile examples.main unison-hello-server
+    scratch/main> pull @unison/httpserver/releases/3.0.2
+    scratch/main> compile examples.main unison-hello-server
     ```
     ''
   ````
