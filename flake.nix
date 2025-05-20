@@ -42,7 +42,8 @@
       hash = "sha256-0HOLtLh1zRdaGQqchT5zFegWKJHkQe9r7DGKL6sSkPo=";
     };
 
-    localPackages = pkgs: let
+    local = {
+      packages = pkgs: let
       darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
     in {
       ucm = unison.packages.${pkgs.system}.default;
@@ -76,6 +77,21 @@
         hash = "sha256-PrbeIxhHWas35XfGnVSEMh4rH4uk+4Sls6syj4H29eQ=";
       };
     };
+
+      packagesLib = pkgs: let
+        buildFromTranscript =
+          pkgs.callPackage ./nix/build-from-transcript.nix {
+            ucm = (local.packages pkgs).ucm-bin;
+          };
+      in {
+        inherit buildFromTranscript;
+
+        buildShareProject =
+          pkgs.callPackage ./nix/build-share-project.nix {
+            inherit buildFromTranscript;
+          };
+      };
+    };
   in
     flake-utils.lib.eachSystem systems
     (
@@ -83,7 +99,8 @@
         pkgs = import nixpkgs {inherit system;};
       in {
         packages =
-          {default = self.packages.${system}.ucm-bin;} // localPackages pkgs;
+          {default = self.packages.${system}.ucm-bin;} // local.packages pkgs;
+        packagesLib = local.packagesLib pkgs;
 
         ## Deprecated
         defaultPackage = self.packages.${system}.default;
@@ -94,7 +111,7 @@
     // {
       overlays = {
         default = final: prev: let
-          localPkgs = localPackages final;
+          localPkgs = local.packages final;
         in {
           emacsPackagesFor = emacs:
             (prev.emacsPackagesFor emacs).overrideScope'
@@ -103,6 +120,8 @@
           tree-sitter = prev.tree-sitter.override {
             extraGrammars = self.overlays.tree-sitter final prev;
           };
+
+          unison.lib = local.packagesLib final;
 
           ## Renamed to replace the `unison-ucm` included in Nixpkgs.
           unison-ucm = localPkgs.ucm-bin;
@@ -153,7 +172,7 @@
         };
 
         vim = final: prev: vpkgs: let
-          localPkgs = localPackages final;
+          localPkgs = local.packages final;
         in {
           inherit (localPkgs) vim-unison;
 
@@ -167,7 +186,7 @@
         };
 
         vscode = final: prev: let
-          localPkgs = localPackages final;
+          localPkgs = local.packages final;
         in {
           TomSherman.unison-ui = localPkgs.vscode-ui;
           unison-lang.unison = localPkgs.vscode-lang;
@@ -177,19 +196,7 @@
       ## Deprecated
       overlay = self.overlays.default;
 
-      lib = let
-        buildUnisonFromTranscript = pkgs:
-          pkgs.callPackage ./nix/build-from-transcript.nix {
-            ucm = (localPackages pkgs).ucm-bin;
-          };
-      in {
-        inherit buildUnisonFromTranscript;
-
-        buildUnisonShareProject = pkgs:
-          pkgs.callPackage ./nix/build-share-project.nix {
-            buildUnisonFromTranscript = buildUnisonFromTranscript pkgs;
-          };
-
+      lib = {
         ## Emacs’s `treesit` package wants to pull grammars from Git repos, so
         ## this provides the Emacs Lisp form to pull the same grammer packaged
         ## in this flake.

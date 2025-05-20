@@ -1,5 +1,5 @@
 {
-  buildUnisonFromTranscript,
+  buildFromTranscript,
   lib,
 }:
 /*
@@ -52,7 +52,7 @@ Compile functions from a project hosted on Unison Share into executables.
     ```
   '';
 in
-  buildUnisonFromTranscript {
+  buildFromTranscript {
     inherit pname version compiledHash meta;
 
     src = builtins.toFile "${pname}-compile-transcript-${version}.md" transcript;
