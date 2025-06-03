@@ -138,7 +138,7 @@
           localPkgs = local.packages final;
         in {
           emacsPackagesFor = emacs:
-            (prev.emacsPackagesFor emacs).overrideScope'
+            (prev.emacsPackagesFor emacs).overrideScope
             (self.overlays.emacs final prev);
 
           tree-sitter = prev.tree-sitter.override {
