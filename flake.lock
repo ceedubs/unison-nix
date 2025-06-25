@@ -733,17 +733,17 @@
         "nixpkgs-release": "nixpkgs-release"
       },
       "locked": {
-        "lastModified": 1750862665,
-        "narHash": "sha256-JNilYMG650zhhXULbbpsJGv81IUe5gCJEILMAvDyF6s=",
+        "lastModified": 1750881622,
+        "narHash": "sha256-3piW83jEh+Tn6Ljk0uHOst04Ybz3QeZbu+isGqL/MGo=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "53b7d6cb20a4b7bda2dc23e96c969372a0c75c75",
+        "rev": "65fc68b1a94af1292260cc5b8b034b1a7f5e26a1",
         "type": "github"
       },
       "original": {
         "owner": "unisonweb",
-        "ref": "release/0.5.42",
         "repo": "unison",
+        "rev": "65fc68b1a94af1292260cc5b8b034b1a7f5e26a1",
         "type": "github"
       }
     }
