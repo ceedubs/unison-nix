@@ -60,6 +60,10 @@
       sys = "linux-x64";
       hash = "sha256-NDIk0UsW7gOkhJJ7YDY2R1ZJ26uirG1TYPO+nGzR61M=";
     };
+    aarch64-linux = {
+      sys = "linux-arm64";
+      hash = "sha256-6U0IoWakRj3R7kz+hjA65cA5+ehIXHPl7Rd7LAJvR60=";
+    };
   };
 
   src = let
