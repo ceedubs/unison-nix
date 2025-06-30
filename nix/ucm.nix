@@ -103,14 +103,12 @@ in
       runHook preInstall
 
       mkdir -p $out/{bin,lib}
-      mv runtime $out/lib/runtime
       mv unison $out/unison
       mv ui $out/ui
 
       makeWrapper ${unison} ${ucm} \
         --prefix PATH : ${binPath} \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [libb2 openssl curl]} \
-        --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
 
       runHook postInstall
