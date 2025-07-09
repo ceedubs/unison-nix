@@ -60,6 +60,10 @@
       sys = "linux-x64";
       hash = "sha256-NDIk0UsW7gOkhJJ7YDY2R1ZJ26uirG1TYPO+nGzR61M=";
     };
+    aarch64-linux = {
+      sys = "linux-arm64";
+      hash = "sha256-6U0IoWakRj3R7kz+hjA65cA5+ehIXHPl7Rd7LAJvR60=";
+    };
   };
 
   src = let
@@ -99,14 +103,12 @@ in
       runHook preInstall
 
       mkdir -p $out/{bin,lib}
-      mv runtime $out/lib/runtime
       mv unison $out/unison
       mv ui $out/ui
 
       makeWrapper ${unison} ${ucm} \
         --prefix PATH : ${binPath} \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [libb2 openssl curl]} \
-        --add-flags "--runtime-path $out/lib/runtime/bin/unison-runtime" \
         --set-default UCM_WEB_UI "$out/ui"
 
       runHook postInstall
