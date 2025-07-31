@@ -10,9 +10,11 @@ jobs:
     - uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # 6.1.3
       with:
         # restore and save a cache using this key
-        primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+        primary-key: nix-${{ runner.os }}-${{ runner.arch }}-check_flake-${{ hashFiles('**/*.nix', '**/flake.lock') }}
         # if there's no cache hit, restore a cache by this prefix
-        restore-prefixes-first-match: nix-${{ runner.os }}-
+        restore-prefixes-first-match: |
+          nix-${{ runner.os }}-${{ runner.arch }}-check_flake-
+          nix-${{ runner.os }}-${{ runner.arch }}-
     - run: nix flake check
   test_ucm:
     strategy:
@@ -25,9 +27,11 @@ jobs:
     - uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # 6.1.3
       with:
         # restore and save a cache using this key
-        primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+        primary-key: nix-${{ runner.os }}-${{ runner.arch }}-test_ucm-${{ hashFiles('**/*.nix', '**/flake.lock') }}
         # if there's no cache hit, restore a cache by this prefix
-        restore-prefixes-first-match: nix-${{ runner.os }}-
+        restore-prefixes-first-match: |
+          nix-${{ runner.os }}-${{ runner.arch }}-test_ucm-
+          nix-${{ runner.os }}-${{ runner.arch }}-
     - run: |
         nix-build default.nix -A unison-ucm
         PATH='' ./result/bin/ucm --version
@@ -42,9 +46,11 @@ jobs:
     - uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # 6.1.3
       with:
         # restore and save a cache using this key
-        primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+        primary-key: nix-${{ runner.os }}-${{ runner.arch }}-test_homeConfiguration-${{ hashFiles('**/*.nix', '**/flake.lock') }}
         # if there's no cache hit, restore a cache by this prefix
-        restore-prefixes-first-match: nix-${{ runner.os }}-
+        restore-prefixes-first-match: |
+          nix-${{ runner.os }}-${{ runner.arch }}-test_homeConfiguration-
+          nix-${{ runner.os }}-${{ runner.arch }}-
     - run: |
         nix run github:nix-community/home-manager -- build --flake .#x86_64-linux-example
         PATH='' ./result/home-path/bin/ucm --version
