@@ -22,7 +22,7 @@
       ## NB: Before upgrading this, make sure the release you upgrade to is
       ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
       ##     all supported systems.
-      url = "github:unisonweb/unison/5e7bd7c4bfe6a1c2ddbcd3d35b7281ef7b1fa10e";
+      url = "github:unisonweb/unison/release/0.5.48";
     };
   };
 
@@ -122,7 +122,7 @@
             # the derivation for the first time. You can just set this to
             # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
             # the hash labeled `got: `.
-            compiledHash = "sha256-Ojlq+aIEvb8agu/UdeHli4fTIHM4mZqPR3tvuLhbpTY=";
+            compiledHash = "sha256-0+V9zRl46o3/LoHq2tdgOCKq2hG+edBrSiBjlyvEGjI=";
 
             # A mapping of executable names to Unison functions.
             executables = {"snake" = "examples.snake.main";};
