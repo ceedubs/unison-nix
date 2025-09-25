@@ -43,26 +43,26 @@
   zlib,
 }: let
   ## NB: When changing this, also change `inputs.unison.url` in flake.nix.
-  version = "0.5.48";
+  version = "0.5.49";
 
   # hash can be calculated with `nix store prefetch-file <url>`. For example:
   # nix store prefetch-file https://github.com/unisonweb/unison/releases/download/release/0.5.34/ucm-linux-x64.tar.gz
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      hash = "sha256-HtgVPgxwOYvsv6Z+qG0GMnRyqzm/AlLDdIrypjzCBHo=";
+      hash = "sha256-ydrSqSaHJcL5DX2voAcUfHn3Y0QRo8CyvYHNZrTMmhI=";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      hash = "sha256-xtn8ozF2UdoSSYYCoYPh4AgbrYm+3vtmIRSXD8OWams=";
+      hash = "sha256-qd+cDB9FnfOija0xeF0GMBIZu2JAjlax/nPtfORzhlM=";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      hash = "sha256-CMiheW4z27awGIpAk/DQN+JAAU7ZvIyFAEAI+ZaQhpY=";
+      hash = "sha256-LiW1Ugaaz1LzVDmfpSkiwtRYMhuv7XeNGEnFc9HndWg=";
     };
     aarch64-linux = {
       sys = "linux-arm64";
-      hash = "sha256-xiEEkzdCS/HSEPLzuuDLh4iITsF2fuR51ACYQoQnzKQ=";
+      hash = "sha256-5QPG6JkciD3iI7WVPB6p3NEO/ZNEBgpRe30XT1op4K8=";
     };
   };
 
