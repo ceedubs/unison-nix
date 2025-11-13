@@ -725,24 +725,29 @@
           "flake-utils"
         ],
         "haskellNix": "haskellNix",
-        "nixpkgs-haskellNix": [
+        "nixpkgs": [
           "unison",
           "haskellNix",
           "nixpkgs-unstable"
         ],
-        "nixpkgs-release": "nixpkgs-release"
+        "nixpkgs-release": "nixpkgs-release",
+        "systems": [
+          "unison",
+          "flake-utils",
+          "systems"
+        ]
       },
       "locked": {
-        "lastModified": 1758162287,
-        "narHash": "sha256-S4C0bXhgx2hN7sDhkSJUHJu/a0yHpu5EPA22UC5we+I=",
+        "lastModified": 1762796125,
+        "narHash": "sha256-KUmuXy73wKjxhu5JETKPHasOad0VfRj0cwxpjpE3KFw=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "2824fce433fe13855ab8fcbf2c2ebbe0c9a5ab4c",
+        "rev": "6e59c0a34ff0929dcdf2dc8e7ac5833b0f374455",
         "type": "github"
       },
       "original": {
         "owner": "unisonweb",
-        "ref": "release/0.5.48",
+        "ref": "release/0.5.50",
         "repo": "unison",
         "type": "github"
       }
