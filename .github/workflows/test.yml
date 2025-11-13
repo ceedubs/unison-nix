@@ -19,7 +19,7 @@ jobs:
   test_ucm:
     strategy:
       matrix:
-        platform: [ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-14]
+        platform: [ubuntu-24.04, ubuntu-24.04-arm, macos-15, macos-15-intel]
     runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
