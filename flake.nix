@@ -50,6 +50,8 @@
 
       ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
+      ucm-desktop = pkgs.callPackage ./nix/ucm-desktop {};
+
       tree-sitter-grammar = pkgs.tree-sitter.buildGrammar {
         language = "unison";
         version = tree-sitter-unison-github.rev;
