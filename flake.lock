@@ -738,17 +738,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1763758802,
-        "narHash": "sha256-TIO6nOL1IdyMWQF0cAh6b+Gh5PCrbDZqoS+h7xMQZOo=",
+        "lastModified": 1764814985,
+        "narHash": "sha256-nUKs+8ZdYiTG6jgwMHeohgL/32RrS+NL4WHNpUp775k=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "29e1d3a1049d910dfdf0f9c46d83be0f040a51dc",
+        "rev": "dea1d0035c3dc76c7ef8330a11b1f5e273331510",
         "type": "github"
       },
       "original": {
         "owner": "unisonweb",
-        "ref": "release/1.0.0",
         "repo": "unison",
+        "rev": "dea1d0035c3dc76c7ef8330a11b1f5e273331510",
         "type": "github"
       }
     }

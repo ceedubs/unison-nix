@@ -22,7 +22,7 @@
       ## NB: Before upgrading this, make sure the release you upgrade to is
       ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
       ##     all supported systems.
-      url = "github:unisonweb/unison/release/1.0.0";
+      url = "github:unisonweb/unison/dea1d0035c3dc76c7ef8330a11b1f5e273331510";
     };
   };
 
