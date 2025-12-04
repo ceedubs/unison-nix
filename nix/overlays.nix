@@ -1,6 +1,6 @@
 let
   makeOverlay = unisonPkgs: self: super: {
-    inherit (unisonPkgs) unison-ucm unison-stack;
+    inherit (unisonPkgs) unison-ucm unison-stack ucm-desktop;
 
     vimPlugins =
       super.vimPlugins
