@@ -139,6 +139,8 @@
         default = final: prev: let
           localPkgs = local.packages final;
         in {
+          inherit (localPkgs) ucm-desktop;
+
           emacsPackagesFor = emacs:
             (prev.emacsPackagesFor emacs).overrideScope
             (self.overlays.emacs final prev);
