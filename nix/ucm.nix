@@ -67,7 +67,7 @@
   };
 
   src = let
-    srcArgs = srcForPlatform.${system};
+    srcArgs = srcForPlatform.${stdenv.hostPlatform.system};
   in
     fetchurl {
       url = "https://github.com/unisonweb/unison/releases/download/release/${version}/ucm-${srcArgs.sys}.tar.gz";
