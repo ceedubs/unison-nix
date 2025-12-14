@@ -39,7 +39,6 @@
   curl,
   openssl,
   stdenv,
-  system,
   zlib,
 }: let
   ## NB: When changing this, also change `inputs.unison.url` in flake.nix.
