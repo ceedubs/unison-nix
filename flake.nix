@@ -46,7 +46,7 @@
       packages = pkgs: let
       darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
     in {
-      ucm = unison.packages.${pkgs.system}.default;
+      ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
       ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
