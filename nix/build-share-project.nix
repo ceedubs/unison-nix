@@ -45,7 +45,7 @@ Compile functions from a project hosted on Unison Share into executables.
     (executableName: functionName: "scratch/main> compile ${functionName} ${executableName}")
     executables;
 
-  transcript = ''
+  transcriptContents = ''
     ```ucm
     scratch/main> pull @${userHandle}/${projectName}/releases/${projectReleaseVersion}
     ${lib.strings.concatStringsSep "\n" compileCommands}
@@ -55,5 +55,5 @@ in
   buildFromTranscript {
     inherit pname version compiledHash meta;
 
-    src = builtins.toFile "${pname}-compile-transcript-${version}.md" transcript;
+    transcript = builtins.toFile "${pname}-compile-transcript-${version}.md" transcriptContents;
   }
