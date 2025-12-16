@@ -54,6 +54,6 @@ Compile functions from a project hosted on Unison Share into executables.
 in
   buildFromTranscript {
     inherit pname version compiledHash meta;
-
+    src = ./.;
     transcript = builtins.toFile "${pname}-compile-transcript-${version}.md" transcriptContents;
   }
