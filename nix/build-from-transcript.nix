@@ -8,10 +8,10 @@
   pname,
   version,
   /*
-  A folder with additional sources you may like to use when evaluating your
-  transcript file.
+  An optional folder with additional sources you may like to use when
+  evaluating your transcript file.
   */
-  src,
+  src? "",
   /*
   A Unison transcript file. The transcript should use the ucm `compile` command to compile any desired executables into the working directory.
 
@@ -46,7 +46,7 @@
     nativeBuildInputs = [cacert];
     buildCommand = ''
       export XDG_DATA_HOME="$TMP/.local/share"
-      cp -r ${src}/. .
+      [ ! -z "${src}" ] && cp -r ${src}/. .
       ${ucm}/bin/ucm -C . transcript ${transcript}
       mkdir -p $out/share
       mv *.uc $out/share/
