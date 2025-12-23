@@ -8,12 +8,17 @@
   pname,
   version,
   /*
+  An optional folder with additional sources you may like to use when
+  evaluating your transcript file.
+  */
+  src? "",
+  /*
   A Unison transcript file. The transcript should use the ucm `compile` command to compile any desired executables into the working directory.
 
   # Examples
 
   ````nix
-  src = builtins.toFile "pull-and-compile-http-server.md" ''
+  transcript = builtins.toFile "pull-and-compile-http-server.md" ''
     ```ucm
     scratch/main> pull @unison/httpserver/releases/3.0.2
     scratch/main> compile examples.main unison-hello-server
@@ -21,7 +26,7 @@
     ''
   ````
   */
-  src,
+  transcript,
   /*
   The compiledHash is the hash of the compiled Unison code. This is needed
   because Nix builds restrict network access unless the output hash is known
@@ -35,13 +40,14 @@
 }: let
   compiled = stdenv.mkDerivation {
     # include the ucm version and transcript hash in the derivation name so it is rebuilt if either changes
-    pname = pname + "_ucm-${ucm.version}_${builtins.hashFile "sha256" src}";
+    pname = pname + "_ucm-${ucm.version}_${builtins.hashFile "sha256" transcript}";
     inherit version;
 
     nativeBuildInputs = [cacert];
     buildCommand = ''
       export XDG_DATA_HOME="$TMP/.local/share"
-      ${ucm}/bin/ucm -C . transcript ${src}
+      [ ! -z "${src}" ] && cp -r ${src}/. .
+      ${ucm}/bin/ucm -C . transcript ${transcript}
       mkdir -p $out/share
       mv *.uc $out/share/
     '';
