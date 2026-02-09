@@ -9,11 +9,11 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.11";
     };
     unison = {
       ## NB: This doesn’t override Nixpkgs, because Unison relies heavily on
@@ -22,7 +22,7 @@
       ## NB: Before upgrading this, make sure the release you upgrade to is
       ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
       ##     all supported systems.
-      url = "github:unisonweb/unison/release/1.0.2";
+      url = "github:unisonweb/unison/release/1.1.0";
     };
   };
 
@@ -38,8 +38,8 @@
     tree-sitter-unison-github = {
       owner = "kylegoetz";
       repo = "tree-sitter-unison";
-      rev = "2.0.1";
-      hash = "sha256-0HOLtLh1zRdaGQqchT5zFegWKJHkQe9r7DGKL6sSkPo=";
+      rev = "2.1.3";
+      hash = "sha256-fnSuRrFp5AfuBKBXmzijBsYHvOHCUFjquuKbOrd1pBg=";
     };
 
     local = {
