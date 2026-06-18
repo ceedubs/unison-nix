@@ -23,7 +23,7 @@
       ## NB: Before upgrading this, make sure the release you upgrade to is
       ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
       ##     all supported systems.
-      url = "github:unisonweb/unison/release/1.1.0";
+      url = "github:unisonweb/unison/release/1.3.0";
     };
   };
 
@@ -47,7 +47,7 @@
       packages = pkgs: let
         darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
       in
-          {
+        {
           ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
           ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
@@ -68,8 +68,8 @@
           vscode-lang = pkgs.vscode-utils.extensionFromVscodeMarketplace {
             name = "unison";
             publisher = "unison-lang";
-            version = "1.2.0";
-            hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+            version = "1.5.0";
+            hash = "sha256-AILdYeuI9rMsv5sEBoGRYbJWqKkPUfEwSRxTgITfD8M=";
           };
 
           vscode-ui = pkgs.vscode-utils.extensionFromVscodeMarketplace {
@@ -128,7 +128,7 @@
               # the derivation for the first time. You can just set this to
               # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
               # the hash labeled `got: `.
-              compiledHash = "sha256-hu0FC3/my8dFTboLxcPDQhIjxDAhzZZPDqgUVmZ2qQY=";
+              compiledHash = "sha256-JwzPrBktsUoqUSkcy/63GiJL07iMvDJlNrt7mmDLLII=";
 
               # A mapping of executable names to Unison functions.
               executables = {"snake" = "examples.snake.main";};
