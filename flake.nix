@@ -1,7 +1,8 @@
 {
   description = "Support for the Unison programming language";
 
-   nixConfig = {
+  nixConfig = {
+    allow-import-from-derivation = true;
     extra-substituters = ["https://unison.cachix.org"];
     extra-trusted-public-keys = [
       "unison.cachix.org-1:i1DUFkisRPVOyLp/vblDsbsObmyCviq/zs6eRuzth3k="
@@ -44,54 +45,56 @@
 
     local = {
       packages = pkgs: let
-      darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
-    in {
-      ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
+      in
+          {
+          ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-      ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
+          ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
-      ucm-desktop = pkgs.callPackage ./nix/ucm-desktop {};
+          tree-sitter-grammar = pkgs.tree-sitter.buildGrammar {
+            language = "unison";
+            version = tree-sitter-unison-github.rev;
+            src = pkgs.fetchFromGitHub tree-sitter-unison-github;
+          };
 
-      tree-sitter-grammar = pkgs.tree-sitter.buildGrammar {
-        language = "unison";
-        version = tree-sitter-unison-github.rev;
-        src = pkgs.fetchFromGitHub tree-sitter-unison-github;
-      };
+          ## TODO: Move this to Unison proper, and then just re-export it from here.
+          ##       Then we can avoid the non-flake usage of the Unison flake.
+          vim-unison = pkgs.vimUtils.buildVimPlugin {
+            name = "vim-unison";
+            src = unison + "/editor-support/vim";
+          };
 
-      ## TODO: Move this to Unison proper, and then just re-export it from here.
-      ##       Then we can avoid the non-flake usage of the Unison flake.
-      vim-unison = pkgs.vimUtils.buildVimPlugin {
-        name = "vim-unison";
-        src = unison + "/editor-support/vim";
-      };
+          vscode-lang = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+            name = "unison";
+            publisher = "unison-lang";
+            version = "1.2.0";
+            hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
+          };
 
-      vscode-lang = pkgs.vscode-utils.extensionFromVscodeMarketplace {
-        name = "unison";
-        publisher = "unison-lang";
-        version = "1.2.0";
-        hash = "sha256-ulm3a1xJxtk+SIQP1sByEqgajd1a4P3oEfVgxoF5GcQ=";
-      };
-
-      vscode-ui = pkgs.vscode-utils.extensionFromVscodeMarketplace {
-        name = "unison-ui";
-        publisher = "TomSherman";
-        version = "0.1.5";
-        hash = "sha256-PrbeIxhHWas35XfGnVSEMh4rH4uk+4Sls6syj4H29eQ=";
-      };
-    };
+          vscode-ui = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+            name = "unison-ui";
+            publisher = "TomSherman";
+            version = "0.1.5";
+            hash = "sha256-PrbeIxhHWas35XfGnVSEMh4rH4uk+4Sls6syj4H29eQ=";
+          };
+        }
+        // (
+          if pkgs.stdenv.isLinux
+          then {ucm-desktop = pkgs.callPackage ./nix/ucm-desktop {};}
+          else {}
+        );
 
       packagesLib = pkgs: let
-        buildFromTranscript =
-          pkgs.callPackage ./nix/build-from-transcript.nix {
-            ucm = (local.packages pkgs).ucm-bin;
-          };
+        buildFromTranscript = pkgs.callPackage ./nix/build-from-transcript.nix {
+          ucm = (local.packages pkgs).ucm-bin;
+        };
       in {
         inherit buildFromTranscript;
 
-        buildShareProject =
-          pkgs.callPackage ./nix/build-share-project.nix {
-            inherit buildFromTranscript;
-          };
+        buildShareProject = pkgs.callPackage ./nix/build-share-project.nix {
+          inherit buildFromTranscript;
+        };
       };
     };
   in
@@ -111,24 +114,25 @@
           # A simple example: create an executable from a Unison Share project
           snake = let
             newPkgs = pkgs.appendOverlays [self.overlays.default];
-          in newPkgs.unison.lib.buildShareProject {
-            pname = "snake";
-            version = "0.0.4";
-            userHandle = "runarorama";
-            projectName = "terminus";
+          in
+            newPkgs.unison.lib.buildShareProject {
+              pname = "snake";
+              version = "0.0.4";
+              userHandle = "runarorama";
+              projectName = "terminus";
 
-            # The compiledHash is the hash of the compiled Unison code. This
-            # is needed because Nix builds restrict network access unless the
-            # output hash is known ahead of time (which helps with
-            # reproducibility and caching). You won't know it until you run
-            # the derivation for the first time. You can just set this to
-            # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
-            # the hash labeled `got: `.
-            compiledHash = "sha256-hu0FC3/my8dFTboLxcPDQhIjxDAhzZZPDqgUVmZ2qQY=";
+              # The compiledHash is the hash of the compiled Unison code. This
+              # is needed because Nix builds restrict network access unless the
+              # output hash is known ahead of time (which helps with
+              # reproducibility and caching). You won't know it until you run
+              # the derivation for the first time. You can just set this to
+              # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
+              # the hash labeled `got: `.
+              compiledHash = "sha256-hu0FC3/my8dFTboLxcPDQhIjxDAhzZZPDqgUVmZ2qQY=";
 
-            # A mapping of executable names to Unison functions.
-            executables = {"snake" = "examples.snake.main";};
-          };
+              # A mapping of executable names to Unison functions.
+              executables = {"snake" = "examples.snake.main";};
+            };
         };
 
         formatter = pkgs.alejandra;
