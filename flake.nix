@@ -128,7 +128,7 @@
               # the derivation for the first time. You can just set this to
               # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
               # the hash labeled `got: `.
-              compiledHash = "sha256-hu0FC3/my8dFTboLxcPDQhIjxDAhzZZPDqgUVmZ2qQY=";
+              compiledHash = "sha256-BkQGEdt2fEea6L9oTO/fCjkFI4hyFhql0+o/0mqnSXo=";
 
               # A mapping of executable names to Unison functions.
               executables = {"snake" = "examples.snake.main";};
