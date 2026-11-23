@@ -70,7 +70,10 @@ Once you are done trying out Unison you can `rm ./result`.
 
 * `ucm-bin`: a binary release of the Unison code manager
   * This is named `unison-ucm` in the overlay and for older versions of Nix (pre-flakes)
+* `ucm-bin-jit`: `ucm-bin` with Nixpkgs' LLVM wired up for the JIT (`ucm --jit on`). This adds roughly 600 MiB to the closure.
+  * This is named `unison-ucm-jit` in the overlay
 * `ucm`: a release of the Unison code manager built from source (without some of the niceties provided by `ucm-bin`)
+* `ucm-jit`: `ucm` with Nixpkgs' LLVM wired up for the JIT, like `ucm-bin-jit`
 * `vim-unison`: a vim plugin providing syntax highlighting for Unison files
   * This is provided as `vimPlugins.vim-unison` in the overlay
 * VS Code extensions
@@ -80,6 +83,8 @@ Once you are done trying out Unison you can `rm ./result`.
 * `buildShareProject` a function for turning functions in a Unison Share project into executable derivations.
   * See [unison-nix-snake](https://github.com/ceedubs/unison-nix-snake) for an example.
   * See [nix/build-share-project.nix](nix/build-share-project.nix) for documentation.
+  * Set `bundle = true` to build standalone executables that don't need `ucm` at runtime.
+  * Set `useUnisonrt = true` to run the compiled program with `unisonrt` instead of `ucm run.compiled`, which starts faster.
 * `buildFromTranscript` a lower-level function for turning a Unison transcript into an executable derivation.
   * See [nix/build-from-transcript.nix](nix/build-from-transcript.nix) for documentation.
 

@@ -38,6 +38,11 @@ Compile functions from a project hosted on Unison Share into executables.
   function `examples.snake.main : '{IO, Exception} ()`.
   */
   executables ? {pname = "main";},
+  /*
+  See buildFromTranscript
+  */
+  bundle ? false,
+  useUnisonrt ? false,
   meta ? {},
 } @ args: let
   compileCommands =
@@ -53,6 +58,6 @@ Compile functions from a project hosted on Unison Share into executables.
   '';
 in
   buildFromTranscript {
-    inherit pname version compiledHash meta;
+    inherit pname version compiledHash bundle useUnisonrt meta;
     transcript = builtins.toFile "${pname}-compile-transcript-${version}.md" transcriptContents;
   }
