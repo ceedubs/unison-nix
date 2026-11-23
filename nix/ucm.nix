@@ -42,26 +42,26 @@
   zlib,
 }: let
   ## NB: When changing this, also change `inputs.unison.url` in flake.nix.
-  version = "1.5.0";
+  version = "2.0.2";
 
   # hash can be calculated with `nix store prefetch-file <url>`. For example:
   # nix store prefetch-file https://github.com/unisonweb/unison/releases/download/release/1.0.0/ucm-linux-x64.tar.gz
   srcForPlatform = {
     aarch64-darwin = {
       sys = "macos-arm64";
-      hash = "sha256-Ph1ql4I1qPmJpYTjMuZw7KGMFfEJn88YgfwSa2K9vq4=";
+      hash = "sha256-tBIWTybCuukYensixP4wko5ZBhdXFWLTK5Spa1DPKe4=";
     };
     x86_64-darwin = {
       sys = "macos-x64";
-      hash = "sha256-T55TdDTY4WFeBGtCJ8jCenei5t2fFJeK9jhSN//Bi5I=";
+      hash = "sha256-G/OZU3S0v0pT0oEGE3Ll9uobyBznTYlqNnRUpj3oEXQ=";
     };
     x86_64-linux = {
       sys = "linux-x64";
-      hash = "sha256-/LLtYoTh9puhDE6Kgo3WVxDwnPHujLh25zKqnvVmz/Q=";
+      hash = "sha256-+6xitO85OKNfGOddavJUiDboln7FyRzd8FAvlYFoI/4=";
     };
     aarch64-linux = {
       sys = "linux-arm64";
-      hash = "sha256-pL4UQdBAu6vbQB24KUz3aRqT+QIhmSvY59W46frb/04=";
+      hash = "sha256-HuWIP9UjTW51LIBfQ1XWd5wlndDfDDOhCH7kFFlRKtQ=";
     };
   };
 
@@ -116,7 +116,7 @@ in
     installCheckPhase = ''
       export XDG_DATA_HOME="$TMP/.local/share"
       echo "ucm version:"
-      ${ucm} version | grep -q 'unison version:' || \
+      ${ucm} version | grep -q 'ucm version:' || \
         { echo 1>&2 'ERROR: ucm is not the expected version or does not function properly'; exit 1; }
       echo 'ls' | PATH="" ${ucm} --codebase-create $TMP > /dev/null || \
         { echo 1>&2 'ERROR: could not run ls on a fresh ucm codebase'; exit 1; }
