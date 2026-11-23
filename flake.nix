@@ -46,7 +46,26 @@
     local = {
       packages = pkgs: let
         darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
-        ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        ## TODO: Remove once a Unison release includes
+        ##       https://github.com/unisonweb/unison/pull/6359, and go back to
+        ##       `unison.packages.${system}.default`.
+        ucm = let
+          upstream = unison.packages.${pkgs.stdenv.hostPlatform.system};
+          unison-cli = pkgs.haskell.lib.overrideCabal upstream.unison-cli (old: {
+            postUnpack =
+              (old.postUnpack or "")
+              + ''
+                mkdir -p docs/mcp
+                cp -r ${unison}/docs/mcp/learn docs/mcp/learn
+              '';
+            preCheck =
+              (old.preCheck or "")
+              + ''
+                export HOME="$TMPDIR"
+              '';
+          });
+        in
+          upstream.unison-cli-main.override {inherit unison-cli;};
         ucm-bin-jit = pkgs.callPackage ./nix/ucm.nix {
           inherit darwin-security-hack;
           withJit = true;
