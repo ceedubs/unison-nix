@@ -23,7 +23,7 @@
       ## NB: Before upgrading this, make sure the release you upgrade to is
       ##     pinned in the cache (https://app.cachix.org/cache/unison#pins) for
       ##     all supported systems.
-      url = "github:unisonweb/unison/release/1.5.0";
+      url = "github:unisonweb/unison/release/2.0.2";
     };
   };
 
@@ -46,9 +46,42 @@
     local = {
       packages = pkgs: let
         darwin-security-hack = pkgs.callPackage ./nix/darwin-security-hack.nix {};
+        ## TODO: Remove once a Unison release includes
+        ##       https://github.com/unisonweb/unison/pull/6359, and go back to
+        ##       `unison.packages.${system}.default`.
+        ucm = let
+          upstream = unison.packages.${pkgs.stdenv.hostPlatform.system};
+          unison-cli = pkgs.haskell.lib.overrideCabal upstream.unison-cli (old: {
+            postUnpack =
+              (old.postUnpack or "")
+              + ''
+                mkdir -p docs/mcp
+                cp -r ${unison}/docs/mcp/learn docs/mcp/learn
+              '';
+            preCheck =
+              (old.preCheck or "")
+              + ''
+                export HOME="$TMPDIR"
+              '';
+          });
+        in
+          upstream.unison-cli-main.override {inherit unison-cli;};
+        ucm-bin-jit = pkgs.callPackage ./nix/ucm.nix {
+          inherit darwin-security-hack;
+          withJit = true;
+        };
       in
-          {
-          ucm = unison.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        {
+          inherit ucm ucm-bin-jit;
+
+          ucm-jit = pkgs.symlinkJoin {
+            name = "${ucm.name}-jit";
+            paths = [ucm];
+            nativeBuildInputs = [pkgs.makeWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/unison --set-default UNISON_LLVM_LIB ${ucm-bin-jit.llvmLib}
+            '';
+          };
 
           ucm-bin = pkgs.callPackage ./nix/ucm.nix {inherit darwin-security-hack;};
 
@@ -110,29 +143,50 @@
         ## Deprecated
         defaultPackage = self.packages.${system}.default;
 
-        checks = {
+        checks = let
+          newPkgs = pkgs.appendOverlays [self.overlays.default];
+        in {
           # A simple example: create an executable from a Unison Share project
-          snake = let
-            newPkgs = pkgs.appendOverlays [self.overlays.default];
-          in
-            newPkgs.unison.lib.buildShareProject {
-              pname = "snake";
-              version = "0.0.4";
-              userHandle = "runarorama";
-              projectName = "terminus";
+          snake = newPkgs.unison.lib.buildShareProject {
+            pname = "snake";
+            version = "0.0.4";
+            userHandle = "runarorama";
+            projectName = "terminus";
 
-              # The compiledHash is the hash of the compiled Unison code. This
-              # is needed because Nix builds restrict network access unless the
-              # output hash is known ahead of time (which helps with
-              # reproducibility and caching). You won't know it until you run
-              # the derivation for the first time. You can just set this to
-              # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
-              # the hash labeled `got: `.
-              compiledHash = "sha256-BkQGEdt2fEea6L9oTO/fCjkFI4hyFhql0+o/0mqnSXo=";
+            # The compiledHash is the hash of the compiled Unison code. This
+            # is needed because Nix builds restrict network access unless the
+            # output hash is known ahead of time (which helps with
+            # reproducibility and caching). You won't know it until you run
+            # the derivation for the first time. You can just set this to
+            # `pkgs.lib.fakeHash` and do a `nix build` or `nix run` and copy
+            # the hash labeled `got: `.
+            compiledHash = "sha256-E7Xde056vBOVn3ytELytYjF6e9r+dm2zr/AfBTi6qMI=";
 
-              # A mapping of executable names to Unison functions.
-              executables = {"snake" = "examples.snake.main";};
-            };
+            # A mapping of executable names to Unison functions.
+            executables = {"snake" = "examples.snake.main";};
+          };
+
+          # Built as standalone executable that doesn't need ucm at runtime
+          snake-bundle = newPkgs.unison.lib.buildShareProject {
+            pname = "snake";
+            version = "0.0.4";
+            userHandle = "runarorama";
+            projectName = "terminus";
+            compiledHash = "sha256-E7Xde056vBOVn3ytELytYjF6e9r+dm2zr/AfBTi6qMI=";
+            executables = {"snake" = "examples.snake.main";};
+            bundle = true;
+          };
+
+          # Run with unisonrt instead of `ucm run.compiled`
+          snake-unisonrt = newPkgs.unison.lib.buildShareProject {
+            pname = "snake";
+            version = "0.0.4";
+            userHandle = "runarorama";
+            projectName = "terminus";
+            compiledHash = "sha256-E7Xde056vBOVn3ytELytYjF6e9r+dm2zr/AfBTi6qMI=";
+            executables = {"snake" = "examples.snake.main";};
+            useUnisonrt = true;
+          };
         };
 
         formatter = pkgs.alejandra;
@@ -157,6 +211,7 @@
 
           ## Renamed to replace the `unison-ucm` included in Nixpkgs.
           unison-ucm = localPkgs.ucm-bin;
+          unison-ucm-jit = localPkgs.ucm-bin-jit;
 
           vimPlugins =
             prev.vimPlugins // self.overlays.vim final prev prev.vimPlugins;

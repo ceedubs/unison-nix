@@ -124,16 +124,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790647211,
-        "narHash": "sha256-AcnPXBqSl3oU0GfXglYwATkvVPnym2Y00PyQDQZ/WNU=",
+        "lastModified": 1795311261,
+        "narHash": "sha256-vjZt/O2vXCryPAYBwLbD0su+jVxHFii4ghy464YFXAY=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "a1652e3ada28924cb9e75ff1d62408ee8df6b78f",
+        "rev": "5d21b6e72db515ac3362a62aa10c0a901113564c",
         "type": "github"
       },
       "original": {
         "owner": "unisonweb",
-        "ref": "release/1.5.0",
+        "ref": "release/2.0.2",
         "repo": "unison",
         "type": "github"
       }

@@ -11,7 +11,7 @@
   An optional folder with additional sources you may like to use when
   evaluating your transcript file.
   */
-  src? "",
+  src ? "",
   /*
   A Unison transcript file. The transcript should use the ucm `compile` command to compile any desired executables into the working directory.
 
@@ -36,8 +36,17 @@
   labeled `got: `.
   */
   compiledHash,
+  /*
+  Build standalone executables with `unisonrt bundle` instead of wrapping `ucm run.compiled`
+  */
+  bundle ? false,
+  /*
+  Wrap `unisonrt` instead of `ucm run.compiled`. It starts faster since it has no parser, typechecker or codebase.
+  */
+  useUnisonrt ? false,
   meta ? {},
-}: let
+}:
+assert lib.assertMsg (!(bundle && useUnisonrt)) "buildFromTranscript: `bundle` and `useUnisonrt` are mutually exclusive"; let
   compiled = stdenv.mkDerivation {
     # include the ucm version and transcript hash in the derivation name so it is rebuilt if either changes
     pname = pname + "_ucm-${ucm.version}_${builtins.hashFile "sha256" transcript}";
@@ -61,12 +70,33 @@ in
     inherit pname version meta;
     nativeBuildInputs = [makeWrapper];
     buildInputs = [];
-    buildCommand = ''
-      mkdir -p $out/bin
+    buildCommand =
+      if bundle
+      then ''
+        mkdir -p $out/bin $out/libexec
 
-      for ucFile in ${compiled}/share/*.uc; do
-        makeWrapper "${ucm}/bin/ucm" "$out/bin/$(basename "$ucFile" .uc)" \
-          --add-flags "run.compiled $ucFile"
-      done
-    '';
+        for ucFile in ${compiled}/share/*.uc; do
+          name="$(basename "$ucFile" .uc)"
+          ${ucm}/bin/unisonrt bundle "$ucFile" -o "$out/libexec/$name"
+          makeWrapper "$out/libexec/$name" "$out/bin/$name" \
+            ${lib.escapeShellArgs ucm.runtimeWrapperArgs}
+        done
+      ''
+      else if useUnisonrt
+      then ''
+        mkdir -p $out/bin
+
+        for ucFile in ${compiled}/share/*.uc; do
+          makeWrapper "${ucm}/bin/unisonrt" "$out/bin/$(basename "$ucFile" .uc)" \
+            --add-flags "$ucFile"
+        done
+      ''
+      else ''
+        mkdir -p $out/bin
+
+        for ucFile in ${compiled}/share/*.uc; do
+          makeWrapper "${ucm}/bin/ucm" "$out/bin/$(basename "$ucFile" .uc)" \
+            --add-flags "run.compiled $ucFile"
+        done
+      '';
   }
